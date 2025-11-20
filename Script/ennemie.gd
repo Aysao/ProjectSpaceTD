@@ -14,7 +14,7 @@ var bullet_layer = 3;
 @export var DAMAGE = 15;
 
 
-var bullet = load("res://bullet.tscn")
+var bullet = load("res://Scene/bullet.tscn")
 @onready var pos = $posBullet
 
 func _ready() -> void:

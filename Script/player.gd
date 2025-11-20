@@ -18,7 +18,7 @@ var fire_cooldown := 0.0
 @export var FIRE_RATE = 1.0
 @export var DAMAGE = 20
 
-var bullet = load("res://bullet.tscn")
+var bullet = load("res://Scene/bullet.tscn")
 @onready var pos = $posBullet
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.

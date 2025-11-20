@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=3 uid="uid://c8aecvlko3jfp"]
 
 [ext_resource type="Script" uid="uid://du2esskcbp3iv" path="res://Script/main.gd" id="1_7mycd"]
-[ext_resource type="PackedScene" uid="uid://cqjmnpqdqfvxy" path="res://player.tscn" id="1_gmi5p"]
-[ext_resource type="PackedScene" uid="uid://cudp3iw0yijm0" path="res://source.tscn" id="2_5vw27"]
+[ext_resource type="PackedScene" uid="uid://cqjmnpqdqfvxy" path="res://Scene/player.tscn" id="1_gmi5p"]
+[ext_resource type="PackedScene" uid="uid://cudp3iw0yijm0" path="res://Scene/source.tscn" id="2_5vw27"]
 [ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="2_272bh"]
-[ext_resource type="PackedScene" uid="uid://bg7fpml8rgkfa" path="res://ennemie.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bg7fpml8rgkfa" path="res://Scene/ennemie.tscn" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://c26uayk3wux2m" path="res://Asset/Texture/paysage-de-nuit-de-galaxie.jpg" id="5_7mycd"]
-[ext_resource type="PackedScene" uid="uid://ctucn284ccvn3" path="res://Prisme.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://ctucn284ccvn3" path="res://Scene/Prisme.tscn" id="5_lquwl"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lquwl"]
 panorama = ExtResource("5_7mycd")
