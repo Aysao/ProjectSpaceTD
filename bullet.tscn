@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7ha5cog4j8y2"]
+
+[ext_resource type="Script" uid="uid://ckilgjst6qupr" path="res://Script/bullet.gd" id="1_v7oki"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rtl8c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7oki"]
+albedo_color = Color(0.7201845, 0.027036078, 0.08813358, 1)
+metallic_specular = 0.39
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.7058824, 0, 0, 1)
+emission_energy_multiplier = 1.4
+backlight_enabled = true
+backlight = Color(0.9882353, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_v7oki"]
+
+[node name="Bullet" type="CharacterBody3D"]
+collision_mask = 134
+script = ExtResource("1_v7oki")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 0, 0, 0)
+shape = SubResource("CylinderShape3D_rtl8c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, -3.5022172e-08, -0.19999997, 0, 0.80121386, -8.742277e-09, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_v7oki")
+mesh = SubResource("CylinderMesh_v7oki")

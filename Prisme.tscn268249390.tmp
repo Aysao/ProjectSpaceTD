@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://ctucn284ccvn3"]
+
+[ext_resource type="Script" uid="uid://nbvbwhudnc0g" path="res://Script/prisme.gd" id="1_h73t2"]
+[ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Prism.glb" id="1_wfrq2"]
+
+[sub_resource type="Animation" id="Animation_h73t2"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/Prism")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_wfrq2"]
+resource_name = "idle_animation"
+loop_mode = 1
+step = 0.0415
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/Prism")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.008077651, 1, 0, 0, 0, 0.20598044, 1, 0, 2.6905103, 0, 0.49677637, 1, 0, 0, 0, 0.7916111, 1, 0, -1.6753893, 0, 0.99759144, 1, 0, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bf34r"]
+_data = {
+&"RESET": SubResource("Animation_h73t2"),
+&"idle_animation": SubResource("Animation_wfrq2")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wfrq2"]
+size = Vector3(2.0402832, 5.567627, 2.0112305)
+
+[node name="Node3D" type="CharacterBody3D"]
+script = ExtResource("1_h73t2")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Prism" parent="Node3D" instance=ExtResource("1_wfrq2")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bf34r")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00012207031, 0.20397949, 0.029052734)
+shape = SubResource("BoxShape3D_wfrq2")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9790907, 5.4061203, 0)
+modulate = Color(0.76478493, 0, 0.09754681, 1)
+font_size = 241

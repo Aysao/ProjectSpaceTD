@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://cudp3iw0yijm0"]
+
+[ext_resource type="Script" uid="uid://nbvbwhudnc0g" path="res://Script/prisme.gd" id="1_6t2v2"]
+[ext_resource type="PackedScene" uid="uid://dbibq3p3b3j0t" path="res://Asset/Entity/Source.glb" id="1_m0mqx"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6t2v2"]
+radius = 7.297611
+
+[sub_resource type="Animation" id="Animation_6t2v2"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/Source")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_m0mqx"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/Source")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.3, 1, 0, 3.8962142, 0.7726019, 0.53333336, 1, 1.3120854, 4.2997665, -5.226953, 0.73333335, 1, 1.2239398, 2.892859, -0.72503185, 0.8666667, 1, 0, 0, -0.725, 1, 1, 0, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D/Source")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.2, 1, 0.097356424, 0.008443108, -0.08598586, 0.9914923, 0.43333334, 1, -0.03338748, 0.01963614, -0.084138446, 0.99570096, 0.6333333, 1, 0.14610228, 0.038719174, -0.31248096, 0.9378223, 0.8, 1, 0.2581431, -0.10429494, 0.028043311, 0.96005124, 0.93333334, 1, 0, -0.10799937, 0, 0.994151, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0xgvm"]
+_data = {
+&"RESET": SubResource("Animation_6t2v2"),
+&"idle": SubResource("Animation_m0mqx")
+}
+
+[node name="Node3D" type="CharacterBody3D" groups=["prism", "shootable"]]
+collision_layer = 2
+script = ExtResource("1_6t2v2")
+HIT_POINT = 500.0
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Source" parent="Node3D" instance=ExtResource("1_m0mqx")]
+transform = Transform3D(1.0000001, 0, 0, 0, 0.99999994, 0, 0, 0, 1.0000001, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_6t2v2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_0xgvm")
+}
+autoplay = "idle"
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.059146, 9.836456, 0)
+modulate = Color(0.76478493, 0, 0.09754681, 1)
+font_size = 651

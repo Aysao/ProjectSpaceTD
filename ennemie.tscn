@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bg7fpml8rgkfa"]
+
+[ext_resource type="PackedScene" uid="uid://ukc067hpdm5k" path="res://Asset/Entity/vaisseau ennemie.glb" id="1_4nbo3"]
+[ext_resource type="Script" uid="uid://d3enrbwxtb8ty" path="res://Script/ennemie.gd" id="1_yb4ka"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wg23x"]
+size = Vector3(7.2116966, 2.6954522, 5.4296083)
+
+[node name="Ennemie" type="CharacterBody3D" groups=["enemies", "shootable"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_yb4ka")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="vaisseau ennemie" parent="Pivot" instance=ExtResource("1_4nbo3")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.2096922e-08, 0.42278183, 1.1918386)
+shape = SubResource("BoxShape3D_wg23x")
+
+[node name="posBullet" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.048555374, 0, -2.8451834)
