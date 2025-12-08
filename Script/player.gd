@@ -21,12 +21,32 @@ var fire_cooldown := 0.0
 var bullet = load("res://Scene/bullet.tscn")
 @onready var pos = $posBullet
 
+#Interace
+@onready var itemList = $GalaxiumTurretList
+@onready var ressourceDisplay = $Panel/RessourceDisplay
+var inBuildArea = false
+
+# Ressource
+@export var galaxium_max = 100.0
+@export var current_galaxium = 0.0
+@export var galaxium_rate = 1.0
+@export var galaxium_bonus_rate = 1.0
+@export var galaxium_timerate = 1.0
+var cooldown_galaxium = 1.0
+
+#Signal
+signal spawnRequest(obj_instance)
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+func _ready() -> void:
+	ressources_update_display()
+	itemList.hide()
+	pass # Replace with function body.
+
 
 func _physics_process(_delta):
-
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Vector2(
@@ -34,6 +54,8 @@ func _physics_process(_delta):
 		Input.get_action_strength("move_back") - Input.get_action_strength("move_forward")
 	)
 	var direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+	
+		
 	var actual_speed = SPEED
 	if Input.is_action_pressed("Shift"):
 		actual_speed = SPEED * speedboost
@@ -45,6 +67,11 @@ func _physics_process(_delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	ressources_update(_delta)
+	
+	if inBuildArea && Input.is_action_just_pressed("open_Menu"):
+		itemList.visible = !itemList.visible
 	
 	if Input.is_action_pressed("Shoot"):
 		if fire_cooldown > 0.0:
@@ -91,3 +118,38 @@ func get_mouse_world_pos() -> Vector3:
 	else:
 		# Si pas d'intersection (rare), on renvoie un point devant le joueur
 		return global_position + -global_transform.basis.z * 10
+
+func _on_source_build_area_entered() -> void:
+	inBuildArea = true
+	pass # Replace with function body.
+
+
+func _on_source_build_area_exited() -> void:
+	inBuildArea = false
+	itemList.hide()
+	pass # Replace with function body.
+
+func _on_galaxium_turret_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+	var itemName = itemList.get_item_text(index)
+	var scene_path = "res://Scene/%s.tscn" % itemName
+	var obj_scene = load(scene_path)
+	var obj_instance = obj_scene.instantiate()
+	print(obj_instance.galaxium_price)
+	if(obj_instance.galaxium_price <= current_galaxium):
+		current_galaxium -= obj_instance.galaxium_price
+		ressources_update_display()
+		emit_signal("spawnRequest", obj_instance)
+	else:
+		obj_instance.queue_free()
+	pass # Replace with function body.
+
+func ressources_update(_delta):
+	cooldown_galaxium -= _delta
+	if cooldown_galaxium <= 0.0:
+		cooldown_galaxium = galaxium_timerate
+		if current_galaxium < galaxium_max:
+			current_galaxium += galaxium_rate * galaxium_bonus_rate
+			ressources_update_display()
+
+func ressources_update_display():
+	ressourceDisplay.text = "Galaxium : %d" % int(current_galaxium)

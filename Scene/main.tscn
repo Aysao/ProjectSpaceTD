@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c8aecvlko3jfp"]
+[gd_scene load_steps=11 format=3 uid="uid://c8aecvlko3jfp"]
 
 [ext_resource type="Script" uid="uid://du2esskcbp3iv" path="res://Script/main.gd" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://cqjmnpqdqfvxy" path="res://Scene/player.tscn" id="1_gmi5p"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="2_272bh"]
 [ext_resource type="PackedScene" uid="uid://bg7fpml8rgkfa" path="res://Scene/ennemie.tscn" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://c26uayk3wux2m" path="res://Asset/Texture/paysage-de-nuit-de-galaxie.jpg" id="5_7mycd"]
-[ext_resource type="PackedScene" uid="uid://ctucn284ccvn3" path="res://Scene/Prisme.tscn" id="5_lquwl"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lquwl"]
 panorama = ExtResource("5_7mycd")
@@ -29,7 +28,24 @@ data = PackedVector3Array(-250.2723, -25, -167.2267, -249.44089, -25, -166.6711,
 [node name="Main" type="Node"]
 script = ExtResource("1_7mycd")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="Ennemie" parent="Enemies" instance=ExtResource("3_h2yge")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -143.90305, -0.6046847, -185.6672)
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="Player" parent="Players" node_paths=PackedStringArray("camera") groups=["Player"] instance=ExtResource("1_gmi5p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.993126, 0.053985596, 0)
+camera = NodePath("../../WorldParameters/Marker3D/Camera3D")
+
+[node name="PlayerItems" type="Node3D" parent="."]
+
+[node name="Source" parent="PlayerItems" instance=ExtResource("2_5vw27")]
+
+[node name="WorldParameters" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldParameters"]
 transform = Transform3D(1, 0, 0, 0, 0.5720599, 0.8202118, 0, -0.8202118, 0.5720599, 0, 153.43005, 126.26234)
 light_energy = 1.212
 light_indirect_energy = 1.502
@@ -37,40 +53,26 @@ light_volumetric_fog_energy = 0.0
 light_angular_distance = 5.4
 light_specular = 9.092
 
-[node name="Marker3D" type="Marker3D" parent="."]
+[node name="Marker3D" type="Marker3D" parent="WorldParameters"]
 transform = Transform3D(1, 0, 0, 0, 0.528438, 0.848972, 0, -0.848972, 0.528438, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="Marker3D" node_paths=PackedStringArray("target")]
+[node name="Camera3D" type="Camera3D" parent="WorldParameters/Marker3D" node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.94745, -2.0370717, 117.17779)
 projection = 1
 size = 73.03981
 script = ExtResource("2_272bh")
-target = NodePath("../../Player")
+target = NodePath("../../../Players/Player")
 offset = Vector3(0, 100.09, 100.01)
 
-[node name="Ennemie" parent="." instance=ExtResource("3_h2yge")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -61.459408, -0.6046847, -60.278267)
-
-[node name="Node3D" parent="." instance=ExtResource("5_lquwl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.187262, 0, -48.226334)
-
-[node name="Node3D2" parent="." instance=ExtResource("5_lquwl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.28357, 0, -52.746365)
-
-[node name="Source" parent="." instance=ExtResource("2_5vw27")]
-
-[node name="Player" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("1_gmi5p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.993126, 0.053985596, 0)
-camera = NodePath("../Marker3D/Camera3D")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldParameters"]
 environment = SubResource("Environment_272bh")
 
-[node name="Node3D3" parent="." instance=ExtResource("5_lquwl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -295.59604, 0, -15.753422)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="GamePlace" type="StaticBody3D" parent="WorldParameters"]
 collision_layer = 128
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="GamPlaceCollision" type="CollisionShape3D" parent="WorldParameters/GamePlace"]
 shape = SubResource("ConcavePolygonShape3D_272bh")
+
+[connection signal="spawnRequest" from="Players/Player" to="." method="_on_player_spawn_request"]
+[connection signal="build_area_entered" from="PlayerItems/Source" to="Players/Player" method="_on_source_build_area_entered"]
+[connection signal="build_area_exited" from="PlayerItems/Source" to="Players/Player" method="_on_source_build_area_exited"]

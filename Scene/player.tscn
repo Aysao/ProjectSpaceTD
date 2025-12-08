@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqjmnpqdqfvxy"]
+[gd_scene load_steps=5 format=3 uid="uid://cqjmnpqdqfvxy"]
 
 [ext_resource type="PackedScene" uid="uid://d24htv86ol0xs" path="res://Asset/Entity/TestPlayer.glb" id="1_fuci7"]
 [ext_resource type="Script" uid="uid://bomiqt20m72e6" path="res://Script/player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://3rr2gmhaaodd" path="res://icon.svg" id="3_xa75v"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wg23x"]
 size = Vector3(3.3803976, 1.8498886, 5.4296083)
@@ -14,9 +15,33 @@ script = ExtResource("1_onrkg")
 
 [node name="TestPlayer" parent="Pivot" instance=ExtResource("1_fuci7")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02821827, 0.155026, 0.351616)
 shape = SubResource("BoxShape3D_wg23x")
 
 [node name="posBullet" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.854255)
+
+[node name="GalaxiumTurretList" type="ItemList" parent="."]
+offset_left = 95.0
+offset_top = 71.0
+offset_right = 272.0
+offset_bottom = 120.0
+max_text_lines = 5
+auto_width = true
+auto_height = true
+item_count = 1
+icon_scale = 0.5
+item_0/text = "Deployer"
+item_0/icon = ExtResource("3_xa75v")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RessourceDisplay" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="item_clicked" from="GalaxiumTurretList" to="." method="_on_galaxium_turret_list_item_clicked"]

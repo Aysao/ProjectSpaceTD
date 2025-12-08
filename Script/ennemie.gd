@@ -64,6 +64,9 @@ func get_Target() -> CharacterBody3D:
 				closest_prism = prism
 	return closest_prism
 	
+func set_Target():
+	target = get_Target()
+	
 func take_damage(damage: int) -> void:
 	HIT_POINT -= damage
 	#$Label3D.text = String.num_scientific(HIT_POINT)

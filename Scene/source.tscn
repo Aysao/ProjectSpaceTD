@@ -1,7 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cudp3iw0yijm0"]
+[gd_scene load_steps=8 format=3 uid="uid://cudp3iw0yijm0"]
 
 [ext_resource type="Script" uid="uid://nbvbwhudnc0g" path="res://Script/prisme.gd" id="1_6t2v2"]
 [ext_resource type="PackedScene" uid="uid://dbibq3p3b3j0t" path="res://Asset/Entity/Source.glb" id="1_m0mqx"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vvp8f"]
+height = 6.3720703
+radius = 30.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6t2v2"]
 radius = 7.297611
@@ -45,6 +49,12 @@ collision_layer = 2
 script = ExtResource("1_6t2v2")
 HIT_POINT = 500.0
 
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="BuildZone" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1860352, 0)
+shape = SubResource("CylinderShape3D_vvp8f")
+
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="Source" parent="Node3D" instance=ExtResource("1_m0mqx")]
@@ -63,3 +73,6 @@ autoplay = "idle"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.059146, 9.836456, 0)
 modulate = Color(0.76478493, 0, 0.09754681, 1)
 font_size = 651
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

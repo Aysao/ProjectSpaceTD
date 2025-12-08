@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctucn284ccvn3"]
+[gd_scene load_steps=8 format=3 uid="uid://ctucn284ccvn3"]
 
-[ext_resource type="Script" uid="uid://nbvbwhudnc0g" path="res://Script/prisme.gd" id="1_h73t2"]
-[ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Prism.glb" id="1_wfrq2"]
+[ext_resource type="Script" uid="uid://nbvbwhudnc0g" path="res://Script/prisme.gd" id="1_w25vu"]
+[ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Prism.glb" id="2_53x54"]
 
 [sub_resource type="Animation" id="Animation_h73t2"]
 length = 0.001
@@ -34,13 +34,16 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_wfrq2"]
 size = Vector3(2.0402832, 9.123062, 2.0112305)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_anu87"]
+
 [node name="Node3D" type="CharacterBody3D" groups=["prism", "shootable"]]
 collision_layer = 2
-script = ExtResource("1_h73t2")
+script = ExtResource("1_w25vu")
+buildZoneSize = 25.0
 
 [node name="Node3D" type="Node3D" parent="."]
 
-[node name="Prism" parent="Node3D" instance=ExtResource("1_wfrq2")]
+[node name="Prism" parent="Node3D" instance=ExtResource("2_53x54")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -56,3 +59,8 @@ shape = SubResource("BoxShape3D_wfrq2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9790907, 5.4061203, 0)
 modulate = Color(0.76478493, 0, 0.09754681, 1)
 font_size = 651
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="BuildZone" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_anu87")
