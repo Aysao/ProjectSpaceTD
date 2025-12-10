@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2uc0ec1xdnsm"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/station_base.tscn" id="1_qqbxt"]
+[ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Deployer.glb" id="2_fv8s3"]
+[ext_resource type="Script" uid="uid://cvnpv6gdd50e" path="res://Script/Station_Deployer.gd" id="2_sgkx2"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sgkx2"]
+height = 7.9819336
+radius = 2.0498047
+
+[sub_resource type="Animation" id="Animation_sgkx2"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_fv8s3"]
+resource_name = "idelAnimation"
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.43333334, 1, 0, 5.0034485, 0, 0.8666667, 1, 0, 1.6589508, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2eus8"]
+_data = {
+&"RESET": SubResource("Animation_sgkx2"),
+&"idelAnimation": SubResource("Animation_fv8s3")
+}
+
+[node name="StationBase" groups=["Station", "shootable"] instance=ExtResource("1_qqbxt")]
+collision_layer = 2
+script = ExtResource("2_sgkx2")
+effectZoneSize = 25
+galaxium_price = 10
+
+[node name="Deployer" parent="Model" index="0" instance=ExtResource("2_fv8s3")]
+
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0598145, 0)
+shape = SubResource("CylinderShape3D_sgkx2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
+libraries = {
+&"": SubResource("AnimationLibrary_2eus8")
+}
+autoplay = "idelAnimation"

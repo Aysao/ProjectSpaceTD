@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4mxsp3hwb1t"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/station_base.tscn" id="1_vymbm"]
+[ext_resource type="PackedScene" uid="uid://dbibq3p3b3j0t" path="res://Asset/Entity/Source.glb" id="2_6wiow"]
+[ext_resource type="Script" uid="uid://6p7niu81427c" path="res://Script/Station_Source.gd" id="2_kt5cy"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vymbm"]
+height = 20.945251
+radius = 7.2475586
+
+[sub_resource type="Animation" id="Animation_vymbm"]
+resource_name = "IdleSource"
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.36666667, 1, 0, 14.979023, 0, 0.6, 1, 0, 7.344328, 0, 0.96666664, 1, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_6wiow"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kt5cy"]
+_data = {
+&"IdleSource": SubResource("Animation_vymbm"),
+&"RESET": SubResource("Animation_6wiow")
+}
+
+[node name="StationBase" groups=["Station", "shootable"] instance=ExtResource("1_vymbm")]
+collision_layer = 2
+script = ExtResource("2_kt5cy")
+max_health = 300
+current_health = 300
+effectZoneSize = 50
+
+[node name="Source" parent="Model" index="0" instance=ExtResource("2_6wiow")]
+
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.009369, 0)
+shape = SubResource("CylinderShape3D_vymbm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
+libraries = {
+&"": SubResource("AnimationLibrary_kt5cy")
+}
+autoplay = "IdleSource"
+
+[connection signal="body_entered" from="EffectZone" to="." method="_on_effect_zone_body_entered"]
+[connection signal="body_exited" from="EffectZone" to="." method="_on_effect_zone_body_exited"]

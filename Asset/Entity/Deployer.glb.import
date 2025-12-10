@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bg4mc8pekwitg"
-path="res://.godot/imported/Prism.glb-17db5cbb436efde89ca8da043b59477f.scn"
+path="res://.godot/imported/Deployer.glb-d438af02254c0752cc0fcb431ccbe3a5.scn"
 
 [deps]
 
-source_file="res://Asset/Entity/Prism.glb"
-dest_files=["res://.godot/imported/Prism.glb-17db5cbb436efde89ca8da043b59477f.scn"]
+source_file="res://Asset/Entity/Deployer.glb"
+dest_files=["res://.godot/imported/Deployer.glb-d438af02254c0752cc0fcb431ccbe3a5.scn"]
 
 [params]
 

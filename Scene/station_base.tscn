@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://nhswwg8agd86"]
+
+[ext_resource type="Script" uid="uid://masmx4uy3d4g" path="res://Script/Station_Base.gd" id="1_5um78"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5um78"]
+radius = 7.2768555
+
+[node name="StationBase" type="CharacterBody3D"]
+script = ExtResource("1_5um78")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="HealthLabel" type="Label3D" parent="."]
+modulate = Color(0.7529683, 0, 0.030390816, 1)
+font_size = 600
+horizontal_alignment = 2
+vertical_alignment = 0
+
+[node name="EffectZone" type="Area3D" parent="."]
+
+[node name="CollisionEffectZone" type="CollisionShape3D" parent="EffectZone"]
+shape = SubResource("CylinderShape3D_5um78")

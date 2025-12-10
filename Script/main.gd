@@ -6,8 +6,6 @@ extends Node
 #signal
 signal createUpdate
 
-#preload Scene 
-var deployer = preload("res://Scene/Deployer.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -19,8 +17,9 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_player_spawn_request(obj_instance: Variant) -> void:
-	var spawn_pos = player.get_global_position() + Vector3(0,0,5)
+func _on_player_spawn_request(obj_instance: Variant, position: Variant) -> void:
+	print("spawn request accepted")
+	var spawn_pos = position
 	obj_instance.global_transform.origin = spawn_pos
 	
 	playerItems.add_child(obj_instance)

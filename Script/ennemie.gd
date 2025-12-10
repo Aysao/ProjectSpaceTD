@@ -56,7 +56,7 @@ func get_Target() -> CharacterBody3D:
 	var closest_prism: CharacterBody3D = null
 	var min_distance := INF
 	
-	for prism in get_tree().get_nodes_in_group("prism"):
+	for prism in get_tree().get_nodes_in_group("Station"):
 		if  prism.is_inside_tree():
 			var dist = global_position.distance_to(prism.global_position)
 			if dist < min_distance:

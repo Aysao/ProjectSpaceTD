@@ -35,7 +35,12 @@ var inBuildArea = false
 var cooldown_galaxium = 1.0
 
 #Signal
-signal spawnRequest(obj_instance)
+signal spawnRequest(obj_instance,position)
+
+#Build
+var is_building_mode = false
+var buildcooldown = 1.0
+const buildCooldownAmount = 1.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -68,12 +73,18 @@ func _physics_process(_delta):
 
 	move_and_slide()
 	
+	if is_building_mode :
+		buildcooldown -= _delta
+		if buildcooldown <= 0:
+			if Input.is_action_pressed("Shoot"):
+				sendStationSpawnRequest()
+			elif Input.is_action_just_pressed("build"):
+				$blueprintModel.get_child(0).queue_free()
+				is_building_mode = false
+	
 	ressources_update(_delta)
 	
-	if inBuildArea && Input.is_action_just_pressed("open_Menu"):
-		itemList.visible = !itemList.visible
-	
-	if Input.is_action_pressed("Shoot"):
+	if Input.is_action_pressed("Shoot") && !is_building_mode:
 		if fire_cooldown > 0.0:
 			fire_cooldown -= _delta
 		
@@ -119,29 +130,32 @@ func get_mouse_world_pos() -> Vector3:
 		# Si pas d'intersection (rare), on renvoie un point devant le joueur
 		return global_position + -global_transform.basis.z * 10
 
-func _on_source_build_area_entered() -> void:
-	inBuildArea = true
-	pass # Replace with function body.
-
-
-func _on_source_build_area_exited() -> void:
-	inBuildArea = false
-	itemList.hide()
-	pass # Replace with function body.
-
 func _on_galaxium_turret_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	var itemName = itemList.get_item_text(index)
-	var scene_path = "res://Scene/%s.tscn" % itemName
-	var obj_scene = load(scene_path)
-	var obj_instance = obj_scene.instantiate()
-	print(obj_instance.galaxium_price)
-	if(obj_instance.galaxium_price <= current_galaxium):
-		current_galaxium -= obj_instance.galaxium_price
-		ressources_update_display()
-		emit_signal("spawnRequest", obj_instance)
-	else:
-		obj_instance.queue_free()
+	#var obj_scene = StationReference.Station_Scenes["DEPLOYER"][itemName.strip_edges().to_upper()]
+	#var obj_instance = obj_scene.instantiate()
+	
+	#if(obj_instance.galaxium_price <= current_galaxium):
+		#current_galaxium -= obj_instance.galaxium_price
+		#ressources_update_display()
+		#emit_signal("spawnRequest", obj_instance)
+	#else:
+		#obj_instance.queue_free()
 	pass # Replace with function body.
+
+func sendStationSpawnRequest():
+	if $blueprintModel.get_child_count() > 0 && is_building_mode:
+		var stationSpawnModel = $blueprintModel.get_child(0)
+		current_galaxium -= stationSpawnModel.galaxium_price
+		var scene_file = stationSpawnModel.scene_file_path
+		stationSpawnModel.queue_free()
+		
+		var station_incoming = load(scene_file).instantiate()
+		var stationSpawnPosition = $blueprintModel.global_position
+		is_building_mode = false
+		
+		emit_signal("spawnRequest", station_incoming, stationSpawnPosition)
+	
 
 func ressources_update(_delta):
 	cooldown_galaxium -= _delta
@@ -153,3 +167,28 @@ func ressources_update(_delta):
 
 func ressources_update_display():
 	ressourceDisplay.text = "Galaxium : %d" % int(current_galaxium)
+
+
+func _on_station_base_build_area_entered() -> void:
+	inBuildArea = true
+	pass # Replace with function body.
+
+
+func _on_station_base_build_area_exited() -> void:
+	inBuildArea = false
+	itemList.hide()
+	pass # Replace with function body.
+
+
+func _on_control_emit_spawn_request(station_name: String) -> void:
+	if $blueprintModel.get_child_count() == 0 :
+		var station_scene = StationReference.Station_sub_item_definition[station_name]["scene"]
+		var instance = station_scene.instantiate()
+		if instance.galaxium_price <= current_galaxium :
+			instance.activated = 0
+			$blueprintModel.add_child(instance)
+			is_building_mode = true
+			buildcooldown = buildCooldownAmount
+		else :
+			instance.queue_free()
+	pass # Replace with function body.

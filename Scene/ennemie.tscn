@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bg7fpml8rgkfa"]
 
 [ext_resource type="PackedScene" uid="uid://ukc067hpdm5k" path="res://Asset/Entity/vaisseau ennemie.glb" id="1_4nbo3"]
-[ext_resource type="Script" uid="uid://d3enrbwxtb8ty" path="res://Script/ennemie.gd" id="1_yb4ka"]
+[ext_resource type="Script" uid="uid://d3enrbwxtb8ty" path="res://Script/Ennemie.gd" id="1_yb4ka"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wg23x"]
 size = Vector3(7.2116966, 2.6954522, 5.4296083)
