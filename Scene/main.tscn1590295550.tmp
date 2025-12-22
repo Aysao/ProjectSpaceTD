@@ -1,12 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://c8aecvlko3jfp"]
+[gd_scene load_steps=12 format=3 uid="uid://c8aecvlko3jfp"]
 
 [ext_resource type="Script" uid="uid://du2esskcbp3iv" path="res://Script/main.gd" id="1_7mycd"]
-[ext_resource type="Script" uid="uid://b25l574jxvm8t" path="res://Script/run_manager.gd" id="2_75buv"]
+[ext_resource type="PackedScene" uid="uid://cqjmnpqdqfvxy" path="res://Scene/player.tscn" id="1_gmi5p"]
 [ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="2_272bh"]
+[ext_resource type="PackedScene" uid="uid://bg7fpml8rgkfa" path="res://Scene/ennemie.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://c4mxsp3hwb1t" path="res://Scene/station_source.tscn" id="4_1xcnr"]
 [ext_resource type="Texture2D" uid="uid://c26uayk3wux2m" path="res://Asset/Texture/paysage-de-nuit-de-galaxie.jpg" id="5_7mycd"]
-[ext_resource type="Script" uid="uid://5qu7eg5dshur" path="res://Script/BulletManager.gd" id="6_ow1sv"]
-[ext_resource type="Script" uid="uid://c82fbksx4263t" path="res://Script/MainMenu.gd" id="7_75buv"]
-[ext_resource type="Script" uid="uid://b41y6lvaa3q0l" path="res://Script/ressources_manager.gd" id="7_c2iwn"]
 [ext_resource type="PackedScene" uid="uid://dxe3uwdnorel0" path="res://Scene/Hud.tscn" id="7_ow1sv"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lquwl"]
@@ -30,24 +29,26 @@ data = PackedVector3Array(-250.2723, -25, -167.2267, -249.44089, -25, -166.6711,
 [node name="Main" type="Node"]
 script = ExtResource("1_7mycd")
 
-[node name="RunManager" type="Node3D" parent="."]
-script = ExtResource("2_75buv")
-enemiesPoolAmount = 6
+[node name="GameNode" type="Node3D" parent="."]
 
-[node name="BulletManager" type="Node3D" parent="RunManager" groups=["bullet_manager"]]
-script = ExtResource("6_ow1sv")
+[node name="Enemies" type="Node3D" parent="GameNode"]
 
-[node name="GameNode" type="Node3D" parent="RunManager"]
+[node name="Ennemie" parent="GameNode/Enemies" instance=ExtResource("3_h2yge")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -143.90305, 0.11489117, -185.6672)
 
-[node name="Enemies" type="Node3D" parent="RunManager/GameNode"]
+[node name="Players" type="Node3D" parent="GameNode"]
 
-[node name="Players" type="Node3D" parent="RunManager/GameNode"]
+[node name="Player" parent="GameNode/Players" node_paths=PackedStringArray("camera") groups=["Player"] instance=ExtResource("1_gmi5p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.993126, 0.053985596, 0)
+camera = NodePath("../../WorldParameters/Marker3D/Camera3D")
 
-[node name="PlayerItems" type="Node3D" parent="RunManager/GameNode"]
+[node name="PlayerItems" type="Node3D" parent="GameNode"]
 
-[node name="WorldParameters" type="Node3D" parent="RunManager/GameNode"]
+[node name="StationBase" parent="GameNode/PlayerItems" instance=ExtResource("4_1xcnr")]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="RunManager/GameNode/WorldParameters"]
+[node name="WorldParameters" type="Node3D" parent="GameNode"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="GameNode/WorldParameters"]
 transform = Transform3D(1, 0, 0, 0, 0.5720599, 0.8202118, 0, -0.8202118, 0.5720599, 0, 153.43005, 126.26234)
 light_energy = 1.212
 light_indirect_energy = 1.502
@@ -55,45 +56,29 @@ light_volumetric_fog_energy = 0.0
 light_angular_distance = 5.4
 light_specular = 9.092
 
-[node name="Marker3D" type="Marker3D" parent="RunManager/GameNode/WorldParameters"]
+[node name="Marker3D" type="Marker3D" parent="GameNode/WorldParameters"]
 transform = Transform3D(1, 0, 0, 0, 0.528438, 0.848972, 0, -0.848972, 0.528438, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="RunManager/GameNode/WorldParameters/Marker3D"]
+[node name="Camera3D" type="Camera3D" parent="GameNode/WorldParameters/Marker3D" node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -76.94745, -2.0370717, 117.17779)
 projection = 1
 size = 73.03981
 script = ExtResource("2_272bh")
+target = NodePath("../../../Players/Player")
 offset = Vector3(0, 100.09, 100.01)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="RunManager/GameNode/WorldParameters"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="GameNode/WorldParameters"]
 environment = SubResource("Environment_272bh")
 
-[node name="GamePlace" type="StaticBody3D" parent="RunManager/GameNode/WorldParameters"]
+[node name="GamePlace" type="StaticBody3D" parent="GameNode/WorldParameters"]
 collision_layer = 128
 
-[node name="GamPlaceCollision" type="CollisionShape3D" parent="RunManager/GameNode/WorldParameters/GamePlace"]
+[node name="GamPlaceCollision" type="CollisionShape3D" parent="GameNode/WorldParameters/GamePlace"]
 shape = SubResource("ConcavePolygonShape3D_272bh")
 
-[node name="Control" parent="RunManager/GameNode" instance=ExtResource("7_ow1sv")]
-
-[node name="SourceSpawnMarker" type="Node3D" parent="RunManager"]
-
-[node name="EnemiesSpawnMarker" type="Node3D" parent="RunManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -136.18048, 0, -141.0303)
-
-[node name="PlayerSpawnMarker" type="Node3D" parent="RunManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.059296, 0, 0)
-
-[node name="RessourcesManager" type="Node3D" parent="RunManager"]
-script = ExtResource("7_c2iwn")
-galaxium_max = null
-current_galaxium = null
-galaxium_rate = null
-galaxium_bonus_rate = null
-galaxium_timerate = null
+[node name="Control" parent="GameNode" instance=ExtResource("7_ow1sv")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("7_75buv")
 
 [node name="MainMenu" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -104,39 +89,27 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="CanvasLayer/MainMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/Panel"]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -191.0
-offset_right = 194.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 alignment = 1
 
 [node name="Play" type="Button" parent="CanvasLayer/MainMenu/Panel/VBoxContainer"]
 layout_mode = 2
-text = "Play"
 
 [node name="Quit" type="Button" parent="CanvasLayer/MainMenu/Panel/VBoxContainer"]
 layout_mode = 2
-text = "Quit"
 
 [node name="Option" type="Button" parent="CanvasLayer/MainMenu/Panel/VBoxContainer"]
 layout_mode = 2
-text = "Option"
 
-[connection signal="child_entered_tree" from="RunManager/GameNode/PlayerItems" to="RunManager" method="_on_player_items_child_entered_tree"]
-[connection signal="child_exiting_tree" from="RunManager/GameNode/PlayerItems" to="RunManager" method="_on_player_items_child_exiting_tree"]
-[connection signal="emit_spawn_request" from="RunManager/GameNode/Control" to="RunManager" method="_on_control_emit_spawn_request"]
-[connection signal="runStart" from="CanvasLayer" to="RunManager" method="_on_main_menu_run_start"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/Panel/VBoxContainer/Play" to="CanvasLayer" method="_on_play_pressed"]
+[connection signal="closeSublist" from="." to="GameNode/Control" method="_on_main_close_sublist"]
+[connection signal="spawnRequest" from="GameNode/Players/Player" to="." method="_on_player_spawn_request"]
+[connection signal="build_area_entered" from="GameNode/PlayerItems/StationBase" to="GameNode/Players/Player" method="_on_station_base_build_area_entered"]
+[connection signal="build_area_exited" from="GameNode/PlayerItems/StationBase" to="GameNode/Players/Player" method="_on_station_base_build_area_exited"]
+[connection signal="emit_spawn_request" from="GameNode/Control" to="GameNode/Players/Player" method="_on_control_emit_spawn_request"]

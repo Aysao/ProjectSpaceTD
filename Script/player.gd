@@ -1,40 +1,35 @@
 extends CharacterBody3D
 
 # MOVEMENT VARIABLE 
-@export var SPEED = 15.0
-@export var speedboost = 2
-var actual_speed = 15.0
+@export var SPEED := 15.0
+@export var speedboost := 2
+var actual_speed := 15.0
 @export var rotation_speed := 10.0
 
 # NODES
-@export var camera: Camera3D  # Assigne ta caméra ici
+@onready var spawnBluePrint := $blueprintModel
+@export var camera: Camera3D 
 
 # BULLET CONFIGURATION
-@export var bullet_target = 3;
-var bullet_layer = 0;
+@export var bullet_target := 3;
+var bullet_layer := 0;
 var fire_cooldown := 0.0
+var bullet_pool : BulletPool
 
 # BULLET STATS
-@export var FIRE_RATE = 1.0
-@export var DAMAGE = 20
+@export var FIRE_RATE := 1.0
+@export var DAMAGE := 20
 
-var bullet = load("res://Scene/bullet.tscn")
 @onready var pos = $posBullet
 
 #Interace
-@onready var itemList = $GalaxiumTurretList
-@onready var ressourceDisplay = $Panel/RessourceDisplay
+var areaPlayerIn := []
+var neededBuildArea = StationReference.StationType.NONE
 var inBuildArea = false
 
-# Ressource
-@export var galaxium_max = 100.0
-@export var current_galaxium = 0.0
-@export var galaxium_rate = 1.0
-@export var galaxium_bonus_rate = 1.0
-@export var galaxium_timerate = 1.0
-var cooldown_galaxium = 1.0
-
 #Signal
+signal updateMaterialsDisplay(value)
+signal updateRessourcesDisplay(value, galaxium_rate)
 signal spawnRequest(obj_instance,position)
 
 #Build
@@ -46,8 +41,6 @@ const buildCooldownAmount = 1.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
-	ressources_update_display()
-	itemList.hide()
 	pass # Replace with function body.
 
 
@@ -76,27 +69,25 @@ func _physics_process(_delta):
 	if is_building_mode :
 		buildcooldown -= _delta
 		if buildcooldown <= 0:
-			if Input.is_action_pressed("Shoot"):
+			if Input.is_action_pressed("Shoot") && areaPlayerIn.any(stationTypeFilterInNeededArea) :
 				sendStationSpawnRequest()
 			elif Input.is_action_just_pressed("build"):
 				$blueprintModel.get_child(0).queue_free()
+				neededBuildArea = StationReference.StationType.NONE
 				is_building_mode = false
-	
-	ressources_update(_delta)
 	
 	if Input.is_action_pressed("Shoot") && !is_building_mode:
 		if fire_cooldown > 0.0:
 			fire_cooldown -= _delta
 		
 		if fire_cooldown <= 0.0:
-			var instance = bullet.instantiate()
+			var instance = bullet_pool.get_player_bullet()
 			instance.damage = DAMAGE
 			instance.target=bullet_target
 			instance.position= pos.global_position
 			instance.transform.basis = pos.global_transform.basis
 			instance.direction = -pos.global_transform.basis.z.normalized()
-			
-			get_parent().add_child(instance)
+
 			fire_cooldown = FIRE_RATE
 
 # --- Rotation vers la souris ---
@@ -130,65 +121,57 @@ func get_mouse_world_pos() -> Vector3:
 		# Si pas d'intersection (rare), on renvoie un point devant le joueur
 		return global_position + -global_transform.basis.z * 10
 
-func _on_galaxium_turret_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
-	var itemName = itemList.get_item_text(index)
-	#var obj_scene = StationReference.Station_Scenes["DEPLOYER"][itemName.strip_edges().to_upper()]
-	#var obj_instance = obj_scene.instantiate()
-	
-	#if(obj_instance.galaxium_price <= current_galaxium):
-		#current_galaxium -= obj_instance.galaxium_price
-		#ressources_update_display()
-		#emit_signal("spawnRequest", obj_instance)
-	#else:
-		#obj_instance.queue_free()
-	pass # Replace with function body.
-
 func sendStationSpawnRequest():
 	if $blueprintModel.get_child_count() > 0 && is_building_mode:
-		var stationSpawnModel = $blueprintModel.get_child(0)
-		current_galaxium -= stationSpawnModel.galaxium_price
-		var scene_file = stationSpawnModel.scene_file_path
-		stationSpawnModel.queue_free()
 		
-		var station_incoming = load(scene_file).instantiate()
+		var station_incoming = prepareStationSpawn()
 		var stationSpawnPosition = $blueprintModel.global_position
 		is_building_mode = false
-		
+		neededBuildArea = StationReference.StationType.NONE
 		emit_signal("spawnRequest", station_incoming, stationSpawnPosition)
 	
 
-func ressources_update(_delta):
-	cooldown_galaxium -= _delta
-	if cooldown_galaxium <= 0.0:
-		cooldown_galaxium = galaxium_timerate
-		if current_galaxium < galaxium_max:
-			current_galaxium += galaxium_rate * galaxium_bonus_rate
-			ressources_update_display()
-
-func ressources_update_display():
-	ressourceDisplay.text = "Galaxium : %d" % int(current_galaxium)
 
 
-func _on_station_base_build_area_entered() -> void:
+func prepareStationSpawn():
+	var stationSpawnModel = $blueprintModel.get_child(0)
+	var scene_file = stationSpawnModel.scene_file_path
+	stationSpawnModel.queue_free()
+	var station_incoming = load(scene_file).instantiate()
+	
+	for stationArea in areaPlayerIn.filter(stationTypeFilterInNeededArea):
+		stationArea.addChild(station_incoming)
+	
+	if station_incoming.station_Type == StationReference.StationType.DEPLOYER:
+		bindBuildArea(station_incoming)
+	
+	if station_incoming.station_Type == StationReference.StationType.ATTACKER:
+		print("AttackersCreation")
+	
+	return station_incoming
+		
+func stationTypeFilterInNeededArea(node):
+	return node.station_Type == neededBuildArea
+
+func _on_station_base_build_area_entered(stationNode: Node3D) -> void:
+	areaPlayerIn.append(stationNode)
 	inBuildArea = true
 	pass # Replace with function body.
 
 
-func _on_station_base_build_area_exited() -> void:
+func _on_station_base_build_area_exited(stationNode: Node3D) -> void:
+	if areaPlayerIn.has(stationNode):
+		areaPlayerIn.erase(stationNode)
 	inBuildArea = false
-	itemList.hide()
 	pass # Replace with function body.
+	
 
-
-func _on_control_emit_spawn_request(station_name: String) -> void:
-	if $blueprintModel.get_child_count() == 0 :
-		var station_scene = StationReference.Station_sub_item_definition[station_name]["scene"]
-		var instance = station_scene.instantiate()
-		if instance.galaxium_price <= current_galaxium :
-			instance.activated = 0
-			$blueprintModel.add_child(instance)
-			is_building_mode = true
-			buildcooldown = buildCooldownAmount
-		else :
-			instance.queue_free()
-	pass # Replace with function body.
+func spawnParameters(main_camera: Node3D):
+	camera = main_camera
+	
+func bindBuildArea(source):
+	source.build_area_entered.connect(self._on_station_base_build_area_entered)
+	source.build_area_exited.connect(self._on_station_base_build_area_exited)
+	
+func set_bullet_pool(in_bullet_pool: BulletPool):
+	bullet_pool = in_bullet_pool

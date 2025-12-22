@@ -10,24 +10,28 @@ const Station_type_definition := {
 	"DEPLOYER": {
 		"name" : "Deployer",
 		"icon" : preload("res://Asset/icons/deployer.png"),
-		"sub_items": []
+		"sub_items": ["Galaxy_gun"]
 		}
 }
 
 const Station_sub_item_definition := {
 	"Station_deployer": {
 		"name": "Station Deployer",
+		"neededArea": StationType.SOURCE,
 		"icon": preload("res://Asset/icons/deployer.png"),
-		"scene": preload("res://Scene/station_deployer.tscn")
+		"scene": "res://Scene/station_deployer.tscn"
 	},
 	"Galaxy_gun": {
 		"name": "Galaxy Gun",
-		"icon": preload("res://icon.svg"),
-		"scene": preload("res://Scene/station_deployer.tscn")
+		"neededArea": StationType.DEPLOYER,
+		"icon": preload("res://Asset/icons/galaxyGun.png"),
+		"scene": "res://Scene/station_GalaxyGun.tscn"
 	}
 }
 
 enum StationType{
 	SOURCE,
 	DEPLOYER,
+	ATTACKER,
+	NONE
 }

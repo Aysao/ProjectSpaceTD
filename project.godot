@@ -26,6 +26,7 @@ enemies=""
 shootable=""
 Player="Group of players"
 Station=""
+bullet_manager=""
 
 [input]
 

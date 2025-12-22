@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b2uc0ec1xdnsm"]
+[gd_scene load_steps=9 format=3 uid="uid://b2uc0ec1xdnsm"]
 
 [ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/station_base.tscn" id="1_qqbxt"]
 [ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Deployer.glb" id="2_fv8s3"]
@@ -7,6 +7,9 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_sgkx2"]
 height = 7.9819336
 radius = 2.0498047
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_sgkx2"]
+viewport_path = NodePath("HealthBar/SubViewport")
 
 [sub_resource type="Animation" id="Animation_sgkx2"]
 length = 0.001
@@ -39,7 +42,8 @@ _data = {
 collision_layer = 2
 script = ExtResource("2_sgkx2")
 effectZoneSize = 25
-galaxium_price = 10
+galaxium_price = 5
+station_Type = 1
 
 [node name="Deployer" parent="Model" index="0" instance=ExtResource("2_fv8s3")]
 
@@ -47,8 +51,14 @@ galaxium_price = 10
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0598145, 0)
 shape = SubResource("CylinderShape3D_sgkx2")
 
+[node name="Sprite3D" parent="HealthBar" index="1"]
+texture = SubResource("ViewportTexture_sgkx2")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
 libraries = {
 &"": SubResource("AnimationLibrary_2eus8")
 }
 autoplay = "idelAnimation"
+
+[connection signal="body_entered" from="EffectZone" to="." method="_on_effect_zone_body_entered"]
+[connection signal="body_exited" from="EffectZone" to="." method="_on_effect_zone_body_exited"]

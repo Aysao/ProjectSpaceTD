@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxe3uwdnorel0"]
+[gd_scene load_steps=4 format=3 uid="uid://dxe3uwdnorel0"]
 
 [ext_resource type="Script" uid="uid://2orfpt3oeyxu" path="res://Script/hud.gd" id="1_u38dv"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u38dv"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.5516493, 0.6260412, 0.958088, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u38dv"]
+
 [node name="HUD" type="CanvasLayer"]
+visible = false
 script = ExtResource("1_u38dv")
 
 [node name="main_container" type="VBoxContainer" parent="."]
@@ -18,3 +28,73 @@ layout_mode = 2
 
 [node name="HTypeBox" type="HBoxContainer" parent="main_container"]
 layout_mode = 2
+
+[node name="Resources" type="VBoxContainer" parent="."]
+offset_right = 291.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Resources"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Resources/HBoxContainer"]
+layout_mode = 2
+text = "Galaxium"
+
+[node name="ProgressBar" type="ProgressBar" parent="Resources/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_u38dv")
+show_percentage = false
+
+[node name="GalaxiumValue" type="Label" parent="Resources/HBoxContainer/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GalaxiumPerSecond" type="Label" parent="Resources/HBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_u38dv")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Materials" type="HBoxContainer" parent="Resources"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Resources/Materials"]
+layout_mode = 2
+text = "Materials"
+
+[node name="ProgressBar" type="ProgressBar" parent="Resources/Materials"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_u38dv")
+show_percentage = false
+
+[node name="MaterialsValue" type="Label" parent="Resources/Materials/ProgressBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1

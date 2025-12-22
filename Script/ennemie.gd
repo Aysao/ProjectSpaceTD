@@ -2,20 +2,29 @@ extends CharacterBody3D
 
 # ENNEMIE CONFIGURATION 
 var target = null
+var activated = false
 var fire_cooldown := 0.0
 var bullet_layer = 3;
 @export var bullet_target = 2;
 
 # ENNEMIE STATS
-@export var HIT_POINT = 100.0
+@export var hit_point = 100.0
+@export var maxHp := 100.0
 @export var SPEED = 6.0
 @export var FIRE_RATE = 1.0
 @export var fire_distance = 20;
 @export var DAMAGE = 15;
+@export var materialsDropRate := 50
+@export var materialsDropAmount := 1
 
+@onready var pivotmesh := $Pivot
+@onready var collisionMesh := $CollisionShape3D
 
-var bullet = load("res://Scene/bullet.tscn")
+var bulletPool : BulletPool
 @onready var pos = $posBullet
+
+#Signal
+signal onEnemieDeath(value, enemieNode)
 
 func _ready() -> void:
 	pass # Replace with function body.
@@ -39,14 +48,14 @@ func _process(delta: float) -> void:
 				fire_cooldown -= delta
 		
 			if fire_cooldown <= 0.0:
-				var instance = bullet.instantiate()
+				var instance = bulletPool.get_enemie_bullet()
+				print("Bullet : %s" % instance)
 				instance.damage = DAMAGE
 				instance.target=bullet_target
 				instance.position=pos.global_position
 				instance.transform.basis = pos.global_transform.basis
 				instance.direction = -pos.global_transform.basis.z.normalized()
 				
-				get_parent().add_child(instance)
 				fire_cooldown = FIRE_RATE
 	
 	
@@ -67,9 +76,38 @@ func get_Target() -> CharacterBody3D:
 func set_Target():
 	target = get_Target()
 	
-func take_damage(damage: int) -> void:
-	HIT_POINT -= damage
-	#$Label3D.text = String.num_scientific(HIT_POINT)
-	if HIT_POINT <= 0:
-		queue_free()
+func dropCalculation() -> bool:
+	return (randi() % 100 + 1) < materialsDropRate
 	
+
+func take_damage(damage: int) -> void:
+	hit_point -= damage
+	#$Label3D.text = String.num_scientific(hit_point)
+	if hit_point <= 0:
+		if dropCalculation():
+			onEnemieDeath.emit(materialsDropAmount, self)
+		else: 
+			onEnemieDeath.emit(0, self)
+
+func deactivate():
+	set_process(false)
+	set_physics_process(false)
+	target = null
+	activated = false
+	hit_point = maxHp
+	pivotmesh.hide()
+	collisionMesh.disabled = true
+	
+func spawn_enemie(pos):
+	global_position = pos
+	activated = true
+	set_process(true)
+	set_physics_process(true)
+	pivotmesh.show()
+	collisionMesh.disabled = false
+	
+func is_active() -> bool :
+	return activated
+	
+func setPool(bullet_pool : BulletPool):
+	bulletPool = bullet_pool

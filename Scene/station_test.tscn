@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://73dxjhalat8w"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/station_base.tscn" id="1_0rbis"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_a23xy"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
+[node name="StationBase" instance=ExtResource("1_0rbis")]
+
+[node name="Sprite3D" parent="HealthBar" index="1"]
+texture = SubResource("ViewportTexture_a23xy")
