@@ -28,14 +28,17 @@ func _ready() -> void:
 			$HealthBar.visible= true
 			healthbar.max_value = max_health
 			healthbar.value = current_health
-			update_label_position()
+			update_label_position(false)
 		if effectZone.shape == null:
 			effectZone.shape = CylinderShape3D.new()
 		if(effectZone.shape is CylinderShape3D):
 			effectZone.shape = effectZone.shape.duplicate()
 			effectZone.shape.radius = effectZoneSize
 			effectZone.shape.height = height
-		pass # Replace with function body.
+		init()
+			
+	
+	
 
 func take_damage(damage: int) -> void:
 	current_health -= damage
@@ -44,14 +47,20 @@ func take_damage(damage: int) -> void:
 		_die()
 
 
-func update_label_position():
+func update_label_position(isCubic : bool):
 	if not model or not healthbar:
 		return
 
 	# Récupère la taille réelle du modèle
 	var aabb = get_model_aabb(model)
-	var height = aabb.size.y
-	var width = aabb.size.x
+	var height = 0
+	var width = 0
+	if isCubic:
+		height = aabb.size.y if aabb.size.y > aabb.size.x else aabb.size.x
+		width = aabb.size.y if aabb.size.y > aabb.size.x else aabb.size.x
+	else :
+		height = aabb.size.y
+		width = aabb.size.x
 
 	$HealthBar.position = Vector3(2*width/3, height + 0.5, 0)
 
@@ -60,8 +69,11 @@ func get_model_aabb(node: Node) -> AABB:
 	var model := node.get_child(0)
 	for child in model.get_children():
 		if child is MeshInstance3D:
-			aabb = child.get_mesh().get_aabb()
-
+			var temp = child.get_mesh().get_aabb()
+			if aabb.size.y < temp.size.y : 
+				aabb.size.y = temp.size.y
+			if aabb.size.x < temp.size.x : 
+				aabb.size.x = temp.size.x
 	return aabb
 
 func _die() :
@@ -106,3 +118,7 @@ func is_active() -> bool :
 
 func initialisation(ressource_manager: Node3D):
 	ressourceManager = ressource_manager
+
+
+func init():
+	pass
