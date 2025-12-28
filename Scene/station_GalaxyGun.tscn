@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckhdiexsavlu6"]
+[gd_scene load_steps=9 format=3 uid="uid://ckhdiexsavlu6"]
 
 [ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/station_base.tscn" id="1_t7hqv"]
 [ext_resource type="Script" uid="uid://c0ie0iaeycub6" path="res://Script/station_galaxy_gun.gd" id="2_5lmam"]
@@ -9,17 +9,7 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_q0au2"]
 viewport_path = NodePath("HealthBar/SubViewport")
 
-[sub_resource type="Animation" id="Animation_x4xu5"]
-length = 0.001
-tracks/0/type = "rotation_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Model")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
-
-[sub_resource type="Animation" id="Animation_wcc5t"]
+[sub_resource type="Animation" id="Animation_2kvkk"]
 resource_name = "fire"
 tracks/0/type = "position_3d"
 tracks/0/imported = false
@@ -36,7 +26,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.6, 1, 0.19497903, 0, 0, 0.9808074, 1, 1, 0, 0, 0, 1)
 
-[sub_resource type="Animation" id="Animation_5lmam"]
+[sub_resource type="Animation" id="Animation_koldb"]
 resource_name = "idle"
 loop_mode = 1
 tracks/0/type = "rotation_3d"
@@ -45,22 +35,21 @@ tracks/0/enabled = true
 tracks/0/path = NodePath("Model")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.3, 1, 0, 0.9255074, 0, 0.37872937, 0.6, 1, 0, -0.58042353, 0, 0.8143147)
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_x4xu5"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2kvkk"]
 _data = {
-&"RESET": SubResource("Animation_x4xu5"),
-&"fire": SubResource("Animation_wcc5t"),
-&"idle": SubResource("Animation_5lmam")
+&"fire": SubResource("Animation_2kvkk"),
+&"idle": SubResource("Animation_koldb")
 }
 
-[node name="StationBase" node_paths=PackedStringArray("enemiesInZone") instance=ExtResource("1_t7hqv")]
+[node name="StationBase" instance=ExtResource("1_t7hqv")]
+collision_layer = 2
 script = ExtResource("2_5lmam")
 damage = 10.0
 fire_rate = 1.0
 fire_speed = 10.0
 bullet_target = 3
-enemiesInZone = []
 effectZoneSize = 45
 bullet_layer = 0
 galaxiumConsumption = 0.5
@@ -84,13 +73,13 @@ collision_mask = 4
 [node name="Sprite3D" parent="HealthBar" index="1"]
 texture = SubResource("ViewportTexture_q0au2")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
-libraries = {
-&"": SubResource("AnimationLibrary_x4xu5")
-}
-
-[node name="Canon" type="Node3D" parent="." index="5"]
+[node name="Canon" type="Node3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4917889, -4.226822)
+
+[node name="AnimationPlayer" parent="." index="5"]
+libraries = {
+&"": SubResource("AnimationLibrary_2kvkk")
+}
 
 [connection signal="body_entered" from="EffectZone" to="." method="_on_effect_zone_body_entered"]
 [connection signal="body_exited" from="EffectZone" to="." method="_on_effect_zone_body_exited"]

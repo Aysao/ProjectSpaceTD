@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name enemie
 
 # ENNEMIE CONFIGURATION 
 var target = null
@@ -66,7 +67,7 @@ func get_Target() -> CharacterBody3D:
 	var min_distance := INF
 	
 	for prism in get_tree().get_nodes_in_group("Station"):
-		if  prism.is_inside_tree():
+		if  prism.is_inside_tree() and get_tree().get_nodes_in_group("shootable") and prism.activated == 1:
 			var dist = global_position.distance_to(prism.global_position)
 			if dist < min_distance:
 				min_distance = dist

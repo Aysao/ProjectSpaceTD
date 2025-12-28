@@ -26,6 +26,9 @@ transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.009369, 0)
 shape = SubResource("CylinderShape3D_vymbm")
 
+[node name="EffectZone" parent="." index="2"]
+collision_mask = 3
+
 [node name="Sprite3D" parent="HealthBar" index="1"]
 texture = SubResource("ViewportTexture_6wiow")
 

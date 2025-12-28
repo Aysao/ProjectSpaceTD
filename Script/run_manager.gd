@@ -30,7 +30,7 @@ var materials := 0
 var cooldown_galaxium = 1.0
 
 #Preload Scene
-var enemieScene := preload("res://Scene/ennemie.tscn")
+var enemieScene := preload("res://Scene/pirateSpaceship.tscn")
 var playerScene := preload("res://Scene/player.tscn")
 var sourceScene := preload("res://Scene/station_source.tscn")
 
@@ -61,6 +61,7 @@ func _on_main_menu_run_start() -> void:
 	generateEnemiesPool(bulletPool)
 	ressourcesManager.setHud(hud)
 	ressourcesManager.initialize()
+	ressourcesManager.activate()
 	
 	set_process(true)
 	pass # Replace with function body.
@@ -106,10 +107,10 @@ func makeSourceSpawn() -> StationBase :
 
 func _on_player_spawn_request(obj_instance: Variant, position: Variant) -> void:
 	print("spawn request accepted")
+	playerItems.add_child(obj_instance)
 	ressourcesManager.update_material(-obj_instance.materialPrice)
 	var spawn_pos = position
 	obj_instance.global_transform.origin = spawn_pos
-	playerItems.add_child(obj_instance)
 	obj_instance.initialisation(ressourcesManager)
 	emit_signal("closeSublist")
 	
@@ -117,6 +118,7 @@ func _on_player_spawn_request(obj_instance: Variant, position: Variant) -> void:
 	if obj_instance.station_Type == StationReference.StationType.DEPLOYER :
 		var enemies = get_tree().get_nodes_in_group("enemies")
 		for enemy in enemies:
+			print(enemy)
 			enemy.set_Target()
 	elif obj_instance.station_Type == StationReference.StationType.ATTACKER :
 		resetTarget.connect(obj_instance.reset_target)
@@ -136,6 +138,7 @@ func _on_control_emit_spawn_request(station_name: String) -> void:
 			player.is_building_mode = true
 			player.buildcooldown = player.buildCooldownAmount
 			player.neededBuildArea = instance.neededAreaToBuild
+			instance.stationAnimation.stop()
 		else :
 			instance.queue_free()
 	pass # Replace with function body.

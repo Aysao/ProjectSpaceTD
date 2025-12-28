@@ -86,11 +86,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.059296, 0, 0)
 
 [node name="RessourcesManager" type="Node3D" parent="RunManager"]
 script = ExtResource("7_c2iwn")
-galaxium_max = null
-current_galaxium = null
-galaxium_rate = null
-galaxium_bonus_rate = null
-galaxium_timerate = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("7_75buv")
