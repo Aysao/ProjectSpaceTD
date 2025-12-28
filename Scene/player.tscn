@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cqjmnpqdqfvxy"]
 
 [ext_resource type="PackedScene" uid="uid://d24htv86ol0xs" path="res://Asset/Entity/TestPlayer.glb" id="1_fuci7"]
-[ext_resource type="Script" uid="uid://bomiqt20m72e6" path="res://Script/Player.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://bomiqt20m72e6" path="res://Script/player.gd" id="1_onrkg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wg23x"]
 size = Vector3(3.3803976, 1.8498886, 5.4296083)
@@ -9,6 +9,12 @@ size = Vector3(3.3803976, 1.8498886, 5.4296083)
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_mask = 131
 script = ExtResource("1_onrkg")
+SPEED = null
+speedboost = null
+rotation_speed = null
+bullet_target = null
+FIRE_RATE = null
+DAMAGE = null
 
 [node name="playerModel" type="Node3D" parent="."]
 

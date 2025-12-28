@@ -49,5 +49,3 @@ value = 100.0
 billboard = 1
 transparent = false
 texture = SubResource("ViewportTexture_5um78")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

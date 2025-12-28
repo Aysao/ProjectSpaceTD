@@ -1,0 +1,2 @@
+extends enemie
+class_name pirateEnemie

@@ -75,10 +75,11 @@ func _physics_process(_delta):
 				$blueprintModel.get_child(0).queue_free()
 				neededBuildArea = StationReference.StationType.NONE
 				is_building_mode = false
-	
+
+	if fire_cooldown > 0.0:
+		fire_cooldown -= _delta
+
 	if Input.is_action_pressed("Shoot") && !is_building_mode:
-		if fire_cooldown > 0.0:
-			fire_cooldown -= _delta
 		
 		if fire_cooldown <= 0.0:
 			var instance = bullet_pool.get_player_bullet()
@@ -162,6 +163,7 @@ func _on_station_base_build_area_entered(stationNode: Node3D) -> void:
 func _on_station_base_build_area_exited(stationNode: Node3D) -> void:
 	if areaPlayerIn.has(stationNode):
 		areaPlayerIn.erase(stationNode)
+				
 	inBuildArea = false
 	pass # Replace with function body.
 	

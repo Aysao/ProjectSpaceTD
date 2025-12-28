@@ -6,6 +6,8 @@ var hud : CanvasLayer
 var ressources := 0
 var materials := 0
 
+
+var activated := false
 # Ressource
 @export var galaxium_max : int = 100.0
 @export var current_galaxium : int = 0.0
@@ -14,6 +16,8 @@ var materials := 0
 @export var galaxium_timerate : float = 1.0
 var cooldown_galaxium = 1.0
 
+func _ready() -> void:
+	set_process(false)
 
 func _process(delta: float) -> void:
 	cooldown_galaxium -= delta
@@ -45,4 +49,11 @@ func update_galaxium_rate(value_to_update : float):
 
 func isEnough(value : int) -> bool :
 	return materials >= value
+	
+	
+func activate():
+	set_process(true)
+	
+func deactivate():
+	set_process(false)
 	

@@ -38,7 +38,7 @@ _data = {
 &"RESET": SubResource("Animation_6wiow")
 }
 
-[node name="StationBase" groups=["Station", "shootable"] instance=ExtResource("1_vymbm")]
+[node name="StationBase" groups=["shootable"] instance=ExtResource("1_vymbm")]
 collision_layer = 2
 script = ExtResource("2_kt5cy")
 max_health = 300.0
@@ -52,10 +52,13 @@ neededAreaToBuild = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.009369, 0)
 shape = SubResource("CylinderShape3D_vymbm")
 
+[node name="EffectZone" parent="." index="2"]
+collision_mask = 3
+
 [node name="Sprite3D" parent="HealthBar" index="1"]
 texture = SubResource("ViewportTexture_6wiow")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4"]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="." index="4"]
 libraries = {
 &"": SubResource("AnimationLibrary_kt5cy")
 }

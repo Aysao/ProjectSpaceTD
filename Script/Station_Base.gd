@@ -13,16 +13,25 @@ class_name StationBase
 @export var neededAreaToBuild := StationReference.StationType.SOURCE
 var parents_station := []
 var child_station := []
+var inArea := true
 
 var ressourceManager : Node3D
+@onready var stationAnimation := $AnimationPlayer
 @onready var healthbar = $HealthBar/SubViewport/ProgressBar
 @onready var model = $Model
 @onready var effectZone = $EffectZone/CollisionEffectZone
+
+
+
+#Materials
+@export var blueprint_material: ShaderMaterial
+
 
 signal build_area_entered(stationNode : Node3D)
 signal build_area_exited(stationNode : Node3D)
 
 func _ready() -> void:
+	update_visual_state()
 	if activated == 1 :
 		if station_Type == StationReference.StationType.SOURCE or station_Type == StationReference.StationType.DEPLOYER:
 			$HealthBar.visible= true
@@ -91,6 +100,7 @@ func addParent(parent : StationBase):
 	
 
 func _on_effect_zone_body_entered(body: Node3D) -> void:
+	
 	if(body.is_in_group("Player")):
 		emit_signal("build_area_entered", self)
 	pass # Replace with function body.
@@ -106,3 +116,28 @@ func is_active() -> bool :
 
 func initialisation(ressource_manager: Node3D):
 	ressourceManager = ressource_manager
+
+
+func update_visual_state():
+	if activated == 0:
+		apply_blueprint_material(model)
+	elif activated == 1:
+		remove_blueprint_material(model)
+
+
+func apply_blueprint_material(node: Node):
+	if node is MeshInstance3D:
+		node.material_override = blueprint_material
+
+	for child in node.get_children():
+		apply_blueprint_material(child)
+
+
+func remove_blueprint_material(node: Node):
+	if node is MeshInstance3D:
+		node.material_override = null
+
+	for child in node.get_children():
+		remove_blueprint_material(child)
+
+		
