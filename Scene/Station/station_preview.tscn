@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwsfaij546lpd"]
+
+[ext_resource type="Script" uid="uid://bqdo3pn6pucqn" path="res://station_preview.gd" id="1_cd5nn"]
+
+[node name="station_preview" type="Node3D"]
+script = ExtResource("1_cd5nn")

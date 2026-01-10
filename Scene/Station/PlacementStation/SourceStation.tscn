@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://c38mdv0j083mm"]
+
+[ext_resource type="PackedScene" uid="uid://blq8g0dftf0lm" path="res://Scene/Station/PlacementStation/station_placement_type.tscn" id="1_goilr"]
+[ext_resource type="Script" uid="uid://6p7niu81427c" path="res://Script/Station/PlacementStation/Station_Source.gd" id="2_pocqa"]
+[ext_resource type="PackedScene" uid="uid://gj1uu8yyfpuo" path="res://Asset/Entity/NewSource.glb" id="3_lfv14"]
+[ext_resource type="PackedScene" uid="uid://cqdnt0akcj836" path="res://Scene/Station/station_slot.tscn" id="5_0cqtx"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lfv14"]
+height = 7.939453
+radius = 8.634766
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pocqa"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pmrvs"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
+[node name="StationBase" groups=["Source", "shootable"] instance=ExtResource("1_goilr")]
+collision_layer = 2
+script = ExtResource("2_pocqa")
+slotLimit = 6
+max_health = 300.0
+current_health = 300.0
+blueprint_material = null
+
+[node name="NewSource" parent="Model" index="0" instance=ExtResource("3_lfv14")]
+transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0, 0)
+
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9697266, 0)
+shape = SubResource("CylinderShape3D_lfv14")
+
+[node name="Interaction" parent="." index="3"]
+visible = true
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_pocqa")
+
+[node name="Sprite3D" parent="HealthBar" index="1"]
+texture = SubResource("ViewportTexture_pmrvs")
+
+[node name="StationSlot" parent="SlotNode" index="0" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 0)
+parent = NodePath("../..")
+
+[node name="StationSlot2" parent="SlotNode" index="1" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 34.64)
+parent = NodePath("../..")
+
+[node name="StationSlot3" parent="SlotNode" index="2" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 34.64)
+parent = NodePath("../..")
+
+[node name="StationSlot4" parent="SlotNode" index="3" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, 0)
+parent = NodePath("../..")
+
+[node name="StationSlot5" parent="SlotNode" index="4" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, -34.64)
+parent = NodePath("../..")
+
+[node name="StationSlot6" parent="SlotNode" index="5" node_paths=PackedStringArray("parent") instance=ExtResource("5_0cqtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -34.64)
+parent = NodePath("../..")

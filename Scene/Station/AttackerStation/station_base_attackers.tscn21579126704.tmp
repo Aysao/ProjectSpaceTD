@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0mb0v7rtxrf5"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/Station/station_base.tscn" id="1_wr8la"]
+[ext_resource type="Script" uid="uid://cpnlpda0trlkr" path="res://Script/Station/AttackerStation/Station_Base_Attacker.gd" id="2_ckx8g"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ckx8g"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wr8la"]
+radius = 0.13085938
+
+[node name="StationBase" node_paths=PackedStringArray("enemiesInZone") instance=ExtResource("1_wr8la")]
+script = ExtResource("2_ckx8g")
+damage = 10.0
+fire_rate = 1.0
+fire_speed = 10.0
+bullet_target = 3
+enemiesInZone = []
+effectZoneSize = 100
+height = 20
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_ckx8g")
+
+[node name="EffectZone" type="Area3D" parent="." index="4"]
+
+[node name="CollisionEffectZone" type="CollisionShape3D" parent="EffectZone" index="0"]
+shape = SubResource("CylinderShape3D_wr8la")
+
+[connection signal="body_entered" from="EffectZone" to="." method="_on_effect_zone_body_entered"]
+[connection signal="body_exited" from="EffectZone" to="." method="_on_effect_zone_body_exited"]

@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://mtqwofj7qg18"]
+
+[ext_resource type="PackedScene" uid="uid://blq8g0dftf0lm" path="res://Scene/Station/PlacementStation/station_placement_type.tscn" id="1_cksld"]
+[ext_resource type="PackedScene" uid="uid://bg4mc8pekwitg" path="res://Asset/Entity/Deployer.glb" id="2_ctkv8"]
+[ext_resource type="Script" uid="uid://cvnpv6gdd50e" path="res://Script/Station/PlacementStation/Station_Deployer.gd" id="2_eybwd"]
+[ext_resource type="PackedScene" uid="uid://cqdnt0akcj836" path="res://Scene/Station/station_slot.tscn" id="3_eybwd"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ctkv8"]
+height = 8.436035
+radius = 2.078125
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ctkv8"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_p2ea7"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[node name="StationBase" groups=["shootable"] instance=ExtResource("1_cksld")]
+collision_layer = 2
+script = ExtResource("2_eybwd")
+slotLimit = 1
+station_Type = 1
+
+[node name="Camera3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 127.178, 33.676453)
+
+[node name="Deployer" parent="Model" index="0" instance=ExtResource("2_ctkv8")]
+
+[node name="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.94555664, 0)
+shape = SubResource("CylinderShape3D_ctkv8")
+
+[node name="Sprite3D" parent="HealthBar" index="1"]
+texture = SubResource("ViewportTexture_ctkv8")
+
+[node name="StationSlotExtend1" parent="SlotNode" index="0" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.52, 0, 56.38)
+slot_type = 1
+parent = NodePath("../..")
+
+[node name="StationSlotDeployer" parent="SlotNode" index="1" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 60)
+parent = NodePath("../..")
+
+[node name="StationSlotExtend2" parent="SlotNode" index="2" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.52, 0, 56.38)
+slot_type = 1
+parent = NodePath("../..")
+
+[node name="StationSlot1" parent="SlotNode" index="3" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.52, 0, 26.38)
+slot_type = 2
+parent = NodePath("../..")
+
+[node name="StationSlot2" parent="SlotNode" index="4" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+slot_type = 2
+parent = NodePath("../..")
+
+[node name="StationSlot3" parent="SlotNode" index="5" node_paths=PackedStringArray("parent") instance=ExtResource("3_eybwd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.52, 0, 26.38)
+slot_type = 2
+parent = NodePath("../..")
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_p2ea7")

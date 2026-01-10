@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://nhswwg8agd86"]
+
+[ext_resource type="Script" uid="uid://masmx4uy3d4g" path="res://Script/Station/Station_Base.gd" id="1_k6kt4"]
+[ext_resource type="Material" uid="uid://dnwnujymoyuv0" path="res://Asset/Shader/blueprint_holo.tres" id="2_hifbu"]
+[ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="3_w5orb"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_k6kt4"]
+height = 8.580078
+radius = 12.612305
+
+[sub_resource type="LabelSettings" id="LabelSettings_k6kt4"]
+font_size = 100
+
+[sub_resource type="LabelSettings" id="LabelSettings_hifbu"]
+font_size = 128
+outline_size = 20
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_k6kt4"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[node name="StationBase" type="CharacterBody3D" groups=["Station"]]
+script = ExtResource("1_k6kt4")
+blueprint_material = ExtResource("2_hifbu")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 127.178, 0)
+projection = 1
+size = 73.03981
+script = ExtResource("3_w5orb")
+offset = Vector3(0, 100.09, 100.01)
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Interaction" type="Node3D" parent="."]
+visible = false
+
+[node name="InteractionZone" type="Area3D" parent="Interaction"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interaction/InteractionZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0146484375, 0)
+shape = SubResource("CylinderShape3D_k6kt4")
+
+[node name="InteractionHUD" type="Node3D" parent="Interaction"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="SubViewport" type="SubViewport" parent="Interaction/InteractionHUD"]
+size = Vector2i(512, 128)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interaction/InteractionHUD/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Interaction/InteractionHUD/SubViewport/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Description" type="Label" parent="Interaction/InteractionHUD/SubViewport/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Interact"
+label_settings = SubResource("LabelSettings_k6kt4")
+vertical_alignment = 1
+
+[node name="InteractionInput" type="Label" parent="Interaction/InteractionHUD/SubViewport/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "X"
+label_settings = SubResource("LabelSettings_hifbu")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Sprite3D" type="Sprite3D" parent="Interaction/InteractionHUD"]
+billboard = 1
+transparent = false
+texture = SubResource("ViewportTexture_k6kt4")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="Interaction/InteractionZone" to="." method="_on_interaction_zone_body_entered"]
+[connection signal="body_exited" from="Interaction/InteractionZone" to="." method="_on_interaction_zone_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

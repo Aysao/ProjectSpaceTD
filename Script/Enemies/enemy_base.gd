@@ -1,5 +1,5 @@
 extends CharacterBody3D
-class_name enemie
+class_name enemie_base
 
 # ENNEMIE CONFIGURATION 
 var target = null
@@ -8,17 +8,21 @@ var fire_cooldown := 0.0
 var bullet_layer = 3;
 @export var bullet_target = 2;
 
+
+@export var stats = {
+	"damage" : 15,
+	"speed"  : 6.0,
+	"health" : 100.0,
+	"fire_rate": 1.0,
+	"fire_distance" : 20
+}
+
 # ENNEMIE STATS
 @export var hit_point = 100.0
-@export var maxHp := 100.0
-@export var SPEED = 6.0
-@export var FIRE_RATE = 1.0
-@export var fire_distance = 20;
-@export var DAMAGE = 15;
 @export var materialsDropRate := 50
 @export var materialsDropAmount := 1
 
-@onready var pivotmesh := $Pivot
+@onready var pivotmesh := $model
 @onready var collisionMesh := $CollisionShape3D
 
 var bulletPool : BulletPool
@@ -40,34 +44,36 @@ func _process(delta: float) -> void:
 	if target:
 		# regarde vers le prism
 		look_at(target.global_position, Vector3.UP)
-		if global_position.distance_to(target.global_position) > fire_distance:
-			var direction = (target.global_position - global_position).normalized()
-			velocity = direction * SPEED
-			move_and_slide()
+		if global_position.distance_to(target.global_position) > stats["fire_distance"]:
+			movement_event()
 		else: 
-			if fire_cooldown > 0.0:
-				fire_cooldown -= delta
-		
-			if fire_cooldown <= 0.0:
-				var instance = bulletPool.get_enemie_bullet()
-				print("Bullet : %s" % instance)
-				instance.damage = DAMAGE
-				instance.target=bullet_target
-				instance.position=pos.global_position
-				instance.transform.basis = pos.global_transform.basis
-				instance.direction = -pos.global_transform.basis.z.normalized()
+			cooldown(delta)
+			fire_event()
+
+func fire_event():
+	
+	if fire_cooldown <= 0.0:
+		var instance = bulletPool.get_enemie_bullet()
+		print("enemy shooting ! ")
+		instance.initBullet(-pos.global_transform.basis.z.normalized(),
+			bullet_target,
+			stats["damage"],
+			pos)
 				
-				fire_cooldown = FIRE_RATE
+		fire_cooldown = stats["fire_rate"]
 	
-	
-	
-		
+
+func movement_event():
+	var direction = (target.global_position - global_position).normalized()
+	velocity = direction * stats["speed"]
+	move_and_slide()
+
 func get_Target() -> CharacterBody3D:
 	var closest_prism: CharacterBody3D = null
 	var min_distance := INF
 	
 	for prism in get_tree().get_nodes_in_group("Station"):
-		if  prism.is_inside_tree() and get_tree().get_nodes_in_group("shootable") and prism.activated == 1:
+		if  prism.is_inside_tree() and prism.is_in_group("shootable") and prism.activated == 1:
 			var dist = global_position.distance_to(prism.global_position)
 			if dist < min_distance:
 				min_distance = dist
@@ -95,7 +101,7 @@ func deactivate():
 	set_physics_process(false)
 	target = null
 	activated = false
-	hit_point = maxHp
+	hit_point = stats["health"]
 	pivotmesh.hide()
 	collisionMesh.disabled = true
 	
@@ -112,3 +118,7 @@ func is_active() -> bool :
 	
 func setPool(bullet_pool : BulletPool):
 	bulletPool = bullet_pool
+	
+func cooldown(delta):
+	if fire_cooldown > 0.0:
+		fire_cooldown -= delta

@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqdnt0akcj836"]
+
+[ext_resource type="Script" uid="uid://c83iedqmpq61w" path="res://Script/Station/PlacementStation/station_slot.gd" id="1_uifpu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_42wlh"]
+height = 15.0
+radius = 10.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ko6xb"]
+lightmap_size_hint = Vector2i(17, 9)
+flip_faces = true
+top_radius = 10.0
+bottom_radius = 10.0
+height = 0.1
+radial_segments = 16
+cap_top = false
+
+[node name="StationSlot" type="Node3D" groups=["Station_slot"]]
+script = ExtResource("1_uifpu")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_42wlh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+mesh = SubResource("CylinderMesh_ko6xb")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

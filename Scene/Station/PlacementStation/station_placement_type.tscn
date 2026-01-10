@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://blq8g0dftf0lm"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/Station/station_base.tscn" id="1_lpy1l"]
+[ext_resource type="Script" uid="uid://ctsg4tkyubap1" path="res://Script/Station/PlacementStation/station_placement_type.gd" id="2_igpxm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qiirj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06f20"]
+bg_color = Color(0.68652284, 0.08087172, 0.29138973, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_m3biy"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_06f20"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[node name="StationBase" instance=ExtResource("1_lpy1l")]
+script = ExtResource("2_igpxm")
+slotLimit = 0
+
+[node name="HealthBar" type="Node3D" parent="." index="4"]
+visible = false
+
+[node name="SubViewport" type="SubViewport" parent="HealthBar" index="0"]
+transparent_bg = true
+size = Vector2i(1000, 192)
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar/SubViewport" index="0"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 128
+theme_override_styles/background = SubResource("StyleBoxFlat_qiirj")
+theme_override_styles/fill = SubResource("StyleBoxFlat_06f20")
+value = 100.0
+
+[node name="Sprite3D" type="Sprite3D" parent="HealthBar" index="1"]
+billboard = 1
+transparent = false
+texture = SubResource("ViewportTexture_m3biy")
+
+[node name="SlotNode" type="Node3D" parent="." index="5"]
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_06f20")

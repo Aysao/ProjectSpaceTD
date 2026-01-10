@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://elsm3eoxh0eo"]
+
+[ext_resource type="PackedScene" uid="uid://bhrudmit3dh2f" path="res://Scene/Enemies/enemy_base.tscn" id="1_fgwgg"]
+[ext_resource type="Script" uid="uid://bwcn6gkv3v7qh" path="res://Script/Enemies/SpacePirate/pirate_spaceship.gd" id="2_dccnm"]
+
+[node name="Enemy" instance=ExtResource("1_fgwgg")]
+script = ExtResource("2_dccnm")

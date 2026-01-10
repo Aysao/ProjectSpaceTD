@@ -9,19 +9,10 @@ size = Vector3(3.3803976, 1.8498886, 5.4296083)
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_mask = 131
 script = ExtResource("1_onrkg")
-SPEED = null
-speedboost = null
-rotation_speed = null
-bullet_target = null
-FIRE_RATE = null
-DAMAGE = null
 
 [node name="playerModel" type="Node3D" parent="."]
 
 [node name="TestPlayer" parent="playerModel" instance=ExtResource("1_fuci7")]
-
-[node name="blueprintModel" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.3954864)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02821827, 0.155026, 0.351616)

@@ -19,13 +19,13 @@ const Station_sub_item_definition := {
 		"name": "Station Deployer",
 		"neededArea": StationType.SOURCE,
 		"icon": preload("res://Asset/icons/deployer.png"),
-		"scene": "res://Scene/station_deployer.tscn"
+		"scene": "res://Scene/Station/PlacementStation/DeployerStation.tscn"
 	},
 	"Galaxy_gun": {
 		"name": "Galaxy Gun",
 		"neededArea": StationType.DEPLOYER,
 		"icon": preload("res://Asset/icons/galaxyGun.png"),
-		"scene": "res://Scene/station_GalaxyGun.tscn"
+		"scene": "res://Scene/Station/AttackerStation/GalaxyGun_Station.tscn"
 	}
 }
 
@@ -34,4 +34,10 @@ enum StationType{
 	DEPLOYER,
 	ATTACKER,
 	NONE
+}
+
+enum StationSlotType {
+	DEPLOYER_SLOT,
+	ARM_DEPLOYER_SLOT,
+	ATTACKERS_SLOT
 }

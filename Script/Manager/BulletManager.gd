@@ -48,15 +48,21 @@ func get_player_bullet() -> Node3D:
 	return bullet
 	
 func release_ennemie_bullet(bullet):
+	call_deferred("deactivate_enemie_bullet", bullet)
+	enemieBulletPool.append(bullet)
+	
+func release_player_bullet(bullet):
+	call_deferred("deactivate_player_bullet", bullet)
+	playerBulletPool.append(bullet)
+	
+func deactivate_enemie_bullet(bullet):	
 	bullet.visible = false
 	bullet.collision.disabled = false
 	bullet.activated = false
 	bullet.process_mode = Node.PROCESS_MODE_DISABLED
-	enemieBulletPool.append(bullet)
 	
-func release_player_bullet(bullet):
+func deactivate_player_bullet(bullet):
 	bullet.visible = false
 	bullet.activated = false
 	bullet.collision.disabled = true
 	bullet.process_mode = Node.PROCESS_MODE_DISABLED
-	playerBulletPool.append(bullet)

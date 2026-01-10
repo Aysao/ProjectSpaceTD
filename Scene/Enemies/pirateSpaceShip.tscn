@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://b18pwavqamuoj"]
+
+[ext_resource type="PackedScene" uid="uid://elsm3eoxh0eo" path="res://Scene/Enemies/spacePirate.tscn" id="1_f5in2"]
+[ext_resource type="Script" uid="uid://cqyj0dua7ix7f" path="res://Script/Enemies/SpacePirate/space_pirate_ship.gd" id="2_oku6t"]
+[ext_resource type="PackedScene" uid="uid://ukc067hpdm5k" path="res://Asset/Entity/vaisseau ennemie.glb" id="3_o2de0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f5in2"]
+size = Vector3(7.1748657, 2.0230103, 5.313339)
+
+[node name="Enemy" instance=ExtResource("1_f5in2")]
+script = ExtResource("2_oku6t")
+
+[node name="CollisionShape3D" parent="." index="0"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.045585584, 0.85873413, 1.0671692)
+shape = SubResource("BoxShape3D_f5in2")
+
+[node name="vaisseau ennemie" parent="model" index="0" instance=ExtResource("3_o2de0")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="posBullet" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.8895454)

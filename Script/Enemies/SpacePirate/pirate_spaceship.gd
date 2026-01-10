@@ -1,0 +1,2 @@
+extends enemie_base
+class_name space_pirate

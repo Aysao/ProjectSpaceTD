@@ -1,13 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://c8aecvlko3jfp"]
+[gd_scene load_steps=16 format=3 uid="uid://c8aecvlko3jfp"]
 
 [ext_resource type="Script" uid="uid://du2esskcbp3iv" path="res://Script/main.gd" id="1_7mycd"]
-[ext_resource type="Script" uid="uid://b25l574jxvm8t" path="res://Script/run_manager.gd" id="2_75buv"]
+[ext_resource type="Script" uid="uid://b25l574jxvm8t" path="res://Script/Manager/run_manager.gd" id="2_75buv"]
 [ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="2_272bh"]
 [ext_resource type="Texture2D" uid="uid://c26uayk3wux2m" path="res://Asset/Texture/paysage-de-nuit-de-galaxie.jpg" id="5_7mycd"]
-[ext_resource type="Script" uid="uid://5qu7eg5dshur" path="res://Script/BulletManager.gd" id="6_ow1sv"]
+[ext_resource type="PackedScene" uid="uid://dwsfaij546lpd" path="res://Scene/Station/station_preview.tscn" id="5_7y4ci"]
+[ext_resource type="Script" uid="uid://fk7isj3t74xc" path="res://Script/Enemies/enemies_spawn.gd" id="6_c2iwn"]
+[ext_resource type="Script" uid="uid://5qu7eg5dshur" path="res://Script/Manager/BulletManager.gd" id="6_ow1sv"]
 [ext_resource type="Script" uid="uid://c82fbksx4263t" path="res://Script/MainMenu.gd" id="7_75buv"]
-[ext_resource type="Script" uid="uid://b41y6lvaa3q0l" path="res://Script/ressources_manager.gd" id="7_c2iwn"]
+[ext_resource type="Script" uid="uid://b41y6lvaa3q0l" path="res://Script/Manager/ressources_manager.gd" id="7_c2iwn"]
 [ext_resource type="PackedScene" uid="uid://dxe3uwdnorel0" path="res://Scene/Hud.tscn" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://c2fthibiaprc4" path="res://Script/Manager/placement_manager.gd" id="9_3pt4j"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lquwl"]
 panorama = ExtResource("5_7mycd")
@@ -32,10 +35,6 @@ script = ExtResource("1_7mycd")
 
 [node name="RunManager" type="Node3D" parent="."]
 script = ExtResource("2_75buv")
-enemiesPoolAmount = 6
-
-[node name="BulletManager" type="Node3D" parent="RunManager" groups=["bullet_manager"]]
-script = ExtResource("6_ow1sv")
 
 [node name="GameNode" type="Node3D" parent="RunManager"]
 
@@ -74,18 +73,27 @@ collision_layer = 128
 [node name="GamPlaceCollision" type="CollisionShape3D" parent="RunManager/GameNode/WorldParameters/GamePlace"]
 shape = SubResource("ConcavePolygonShape3D_272bh")
 
+[node name="station_preview" parent="RunManager/GameNode/WorldParameters" instance=ExtResource("5_7y4ci")]
+
 [node name="Control" parent="RunManager/GameNode" instance=ExtResource("7_ow1sv")]
 
 [node name="SourceSpawnMarker" type="Node3D" parent="RunManager"]
 
 [node name="EnemiesSpawnMarker" type="Node3D" parent="RunManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -136.18048, 0, -141.0303)
+script = ExtResource("6_c2iwn")
 
 [node name="PlayerSpawnMarker" type="Node3D" parent="RunManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.059296, 0, 0)
 
-[node name="RessourcesManager" type="Node3D" parent="RunManager"]
+[node name="BulletManager" type="Node3D" parent="RunManager" groups=["bullet_manager"]]
+script = ExtResource("6_ow1sv")
+
+[node name="RessourcesManager" type="Node3D" parent="RunManager" groups=["ressource_Manager"]]
 script = ExtResource("7_c2iwn")
+
+[node name="PlacementManager" type="Node3D" parent="RunManager"]
+script = ExtResource("9_3pt4j")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("7_75buv")
@@ -132,6 +140,6 @@ text = "Option"
 
 [connection signal="child_entered_tree" from="RunManager/GameNode/PlayerItems" to="RunManager" method="_on_player_items_child_entered_tree"]
 [connection signal="child_exiting_tree" from="RunManager/GameNode/PlayerItems" to="RunManager" method="_on_player_items_child_exiting_tree"]
-[connection signal="emit_spawn_request" from="RunManager/GameNode/Control" to="RunManager" method="_on_control_emit_spawn_request"]
+[connection signal="emit_spawn_request" from="RunManager/GameNode/Control" to="RunManager/PlacementManager" method="_on_control_emit_spawn_request"]
 [connection signal="runStart" from="CanvasLayer" to="RunManager" method="_on_main_menu_run_start"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/Panel/VBoxContainer/Play" to="CanvasLayer" method="_on_play_pressed"]

@@ -27,6 +27,9 @@ shootable=""
 Player="Group of players"
 Station=""
 bullet_manager=""
+Station_slot=""
+Source=""
+ressource_Manager=""
 
 [input]
 

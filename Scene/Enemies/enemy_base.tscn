@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhrudmit3dh2f"]
+
+[ext_resource type="Script" uid="uid://cghngmb3txvdv" path="res://Script/Enemies/enemy_base.gd" id="1_n6s26"]
+
+[node name="Enemy" type="CharacterBody3D" groups=["enemies", "shootable"]]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_n6s26")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+
+[node name="model" type="Node3D" parent="."]
+
+[node name="posBullet" type="Node3D" parent="."]

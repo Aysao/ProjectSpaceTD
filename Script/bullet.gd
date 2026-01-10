@@ -27,6 +27,12 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 		freeBullet()
 	pass # Replace with function body.
 
+func initBullet(in_direction, in_target, in_damage, in_position):
+	position = in_position.global_position
+	transform.basis = in_position.global_transform.basis
+	target = in_target
+	damage = in_damage
+	direction = in_direction
 
 func freeBullet():
 	releaseBullet.emit(self)

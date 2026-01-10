@@ -10,7 +10,7 @@ var materials := 0
 var activated := false
 # Ressource
 @export var galaxium_max : int = 100.0
-@export var current_galaxium : int = 0.0
+@export var current_galaxium : float = 0.0
 @export var galaxium_rate : float = 1.0
 @export var galaxium_bonus_rate : float = 1.0
 @export var galaxium_timerate : float = 1.0

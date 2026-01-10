@@ -1,6 +1,7 @@
 extends Node
 
 @onready var runManager := $RunManager
+@onready var EnemiesSpawnMarker := $RunManager/EnemiesSpawnMarker
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

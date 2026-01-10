@@ -125,7 +125,6 @@ func updateProgressBar(ressourcesValue : int, ressourcesPerSecond : float):
 func updateMaterialsValue(materialsValue: int):
 	materialsBar.value = materialsValue
 	materialsLabelValue.text = "%d / %d" % [materialsValue, materialsBar.max_value]
-	
 
 func activate(playerInstance: CharacterBody3D):
 	playerInstance.updateMaterialsDisplay.connect(updateMaterialsValue)
