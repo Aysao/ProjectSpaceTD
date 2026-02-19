@@ -2,8 +2,8 @@ extends StationBase
 class_name StationBasePlacement
 
 @onready var healthBar = $HealthBar
-@onready var progressBar = $HealthBar/SubViewport/ProgressBar
 @onready var slotNode = $SlotNode
+@onready var progressBar = $HealthBar/SubViewport/ProgressBar
 
 @export var slotLimit := 0
 
@@ -15,11 +15,11 @@ func init():
 	init_process()
 	update_label_position(false,healthBar,Vector3.ZERO)
 	connect_all_slot_update_limit()
+	reset_all_enemy()
 	pass
 	
 func reset_all_enemy():
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		enemy.set_Target()
+	EventBus.relocate_enemy_closest_target.emit()
 
 func connect_all_slot_update_limit():
 	for slot in slotNode.get_children():
@@ -44,8 +44,22 @@ func _die():
 	for slot in slotNode.get_children():
 		if slot.station:
 			slot.station._die()
+	if parentSlot:
+		parentSlot.station = null
+		parentSlot.parent.update_limit()
+	other_die_effect()
 	queue_free()
 	pass
 
 func init_process():
 	pass
+	
+func other_die_effect():
+	pass
+	
+func take_damage(damage: int) -> void:
+	current_health -= damage
+	progressBar.value = current_health
+	if current_health <= 0:
+		_die()
+	

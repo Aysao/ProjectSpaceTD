@@ -21,21 +21,15 @@ var bullet_pool : BulletPool
 @export var DAMAGE := 20
 @onready var pos = $posBullet
 
-#Interace
-var stationTypeSlot := StationReference.StationType.NONE
-var areaPlayerIn := []
-var neededBuildArea = StationReference.StationType.NONE
-var inBuildArea = false
-
 var in_interact_area := false
 var focusOn : StationBase
 
-#Signal
-signal updateMaterialsDisplay(value)
-signal updateRessourcesDisplay(value, galaxium_rate)
+var is_build_mode := false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+var was_outside_game_area := false
 
 func _ready() -> void:
 	pass # Replace with function body.
@@ -43,7 +37,7 @@ func _ready() -> void:
 
 func _physics_process(_delta):
 	
-	movement_event()
+	movement_event(_delta)
 
 	cooldown(_delta)
 
@@ -74,6 +68,7 @@ func get_mouse_world_pos() -> Vector3:
 
 
 func spawnParameters(main_camera: Node3D, playerItems : Node):
+	EventBus.building_mode.connect(change_mode)
 	camera = main_camera
 	
 	
@@ -100,7 +95,7 @@ func camera_event(_delta):
 
 func fire_event():
 
-	if Input.is_action_pressed("Shoot"):
+	if Input.is_action_pressed("Shoot") and !is_build_mode:
 		
 		if fire_cooldown <= 0.0:
 			var instance = bullet_pool.get_player_bullet()
@@ -112,7 +107,9 @@ func fire_event():
 
 			fire_cooldown = FIRE_RATE
 
-func movement_event():
+func movement_event(delta):
+	var rayon := WorldParameters.area_radius
+	
 	var input_dir = Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
 		Input.get_action_strength("move_back") - Input.get_action_strength("move_forward")
@@ -128,8 +125,24 @@ func movement_event():
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+	
+	var next_position = (global_position + velocity * delta)
+	var dist : float = next_position.length()
+	
+	if dist > rayon:
+		var normal = next_position.normalized()
+		var vel_proj = velocity.dot(normal)
+		
+		if vel_proj > 0:
+			velocity -= normal * vel_proj
+			camera.shake(0.2)
+		
+
 
 	move_and_slide()
+
+func change_mode(_in_is_build_mode : bool):
+	is_build_mode = _in_is_build_mode
 
 func cooldown(_delta):
 	if fire_cooldown > 0.0:

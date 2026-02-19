@@ -28,10 +28,8 @@ var bullet_layer = 3;
 var bulletPool : BulletPool
 @onready var pos = $posBullet
 
-#Signal
-signal onEnemieDeath(value, enemieNode)
-
 func _ready() -> void:
+	
 	pass # Replace with function body.
 
 
@@ -54,7 +52,6 @@ func fire_event():
 	
 	if fire_cooldown <= 0.0:
 		var instance = bulletPool.get_enemie_bullet()
-		print("enemy shooting ! ")
 		instance.initBullet(-pos.global_transform.basis.z.normalized(),
 			bullet_target,
 			stats["damage"],
@@ -91,12 +88,18 @@ func take_damage(damage: int) -> void:
 	hit_point -= damage
 	#$Label3D.text = String.num_scientific(hit_point)
 	if hit_point <= 0:
+		deactivate()
 		if dropCalculation():
-			onEnemieDeath.emit(materialsDropAmount, self)
+			EventBus.on_enemie_death.emit(materialsDropAmount)
 		else: 
-			onEnemieDeath.emit(0, self)
+			EventBus.on_enemie_death.emit(0)
 
 func deactivate():
+	call_deferred("deactivate_event")
+	
+func deactivate_event():
+	if(EventBus.relocate_enemy_closest_target.is_connected(set_Target)):
+		EventBus.relocate_enemy_closest_target.disconnect(set_Target)
 	set_process(false)
 	set_physics_process(false)
 	target = null
@@ -106,6 +109,7 @@ func deactivate():
 	collisionMesh.disabled = true
 	
 func spawn_enemie(pos):
+	EventBus.relocate_enemy_closest_target.connect(set_Target)
 	global_position = pos
 	activated = true
 	set_process(true)

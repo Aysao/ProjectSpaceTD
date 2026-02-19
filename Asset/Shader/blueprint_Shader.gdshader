@@ -5,6 +5,7 @@ uniform vec4 color : source_color = vec4(0.2, 0.8, 1.0, 0.5);
 uniform float line_density = 20.0;
 uniform float line_speed = 1.5;
 uniform float glow_strength = 1.0;
+uniform sampler2D normalmap;
 
 varying vec3 world_pos;
 
@@ -17,7 +18,7 @@ void fragment() {
 	// lignes horizontales animées
     float line = sin((world_pos.y * line_density) + TIME * line_speed);
     line = smoothstep(0.3, 1.0, line);
-
+	
     ALBEDO = color.rgb;
     ALPHA = color.a * line;
 

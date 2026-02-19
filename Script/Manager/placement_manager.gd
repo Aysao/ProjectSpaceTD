@@ -5,10 +5,11 @@ var preview: Node3D = null
 var active_slots: Array[Node3D] = []  # Slots dans lesquels on est
 var nearest_slot: Node3D = null
 
-@onready var RessourcesManager := $"../RessourcesManager"
 @onready var enemieManagement := $"../EnemiesSpawnMarker"
-@onready var stationPreview := $"../GameNode/WorldParameters/station_preview"
 @onready var playerItems := $"../GameNode/PlayerItems"
+@onready var resources_manager: ResourcesManager = $"../RessourcesManager"
+@onready var stationPreview: Node3D = $"../WorldParameters/station_preview"
+
 
 var cooldown_rate = 1.0
 var preview_cooldown = 1.0
@@ -20,8 +21,6 @@ func _process(delta: float) -> void:
 		else :
 			if Input.is_action_just_pressed("Shoot"):
 				confirm_placement()
-			elif Input.is_action_just_pressed("build"): 
-				cancel_placement()
 		
 
 func start_placement(preview_scene: Node3D):
@@ -93,11 +92,11 @@ func confirm_placement() -> bool:
 	station.global_position = preview.global_position
 	
 	if nearest_slot.place_station(station):
-		RessourcesManager.update_material(-station.materialPrice)
+		resources_manager.update_material(-station.materialPrice)
 	
 		onSpawnStation(station)
 		
-		cancel_placement()
+		#cancel_placement()
 		return true
 	else:
 		station.queue_free()
@@ -115,7 +114,7 @@ func _on_control_emit_spawn_request(station_name: String) -> void:
 	if !preview :
 		var station_scene = StationReference.Station_sub_item_definition[station_name]["scene"]
 		var instance = load(station_scene).instantiate()
-		if RessourcesManager.isEnough(instance.materialPrice) :
+		if resources_manager.isEnough(instance.materialPrice) :
 			start_placement(instance)
 		else :
 			instance.queue_free()
@@ -125,9 +124,11 @@ func onSpawnStation(station):
 	if station.station_Type == StationReference.StationType.DEPLOYER :
 		_connect_all_slots()
 	elif station.station_Type == StationReference.StationType.ATTACKER :
-		enemieManagement.resetTarget.connect(station.reset_target)
+		pass
 
 
 func init():
+	EventBus.cancel_placement.connect(cancel_placement)
+	resources_manager = get_tree().get_first_node_in_group("resources_Manager")
 	_connect_all_slots()
 	

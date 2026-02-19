@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp5e6io4ufvxi"]
+
+[ext_resource type="Script" uid="uid://xvw0kqkadxsr" path="res://Script/Enemies/cargo_enemie.gd" id="1_if54a"]
+[ext_resource type="PackedScene" uid="uid://c1kw8g3cf112r" path="res://Asset/Entity/CargoSpaceShipSpawning.glb" id="2_if54a"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_if54a")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="CargoSpaceShipSpawning" parent="Pivot" instance=ExtResource("2_if54a")]
+
+[node name="SpawnPosition" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.829759)

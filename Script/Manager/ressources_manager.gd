@@ -1,5 +1,5 @@
 extends Node3D
-
+class_name ResourcesManager
 
 var hud : CanvasLayer
 
@@ -23,15 +23,20 @@ func _process(delta: float) -> void:
 	cooldown_galaxium -= delta
 	if cooldown_galaxium <= 0 :
 		cooldown_galaxium = galaxium_timerate
-		if (current_galaxium + galaxium_rate * galaxium_bonus_rate) <= galaxium_max:
+		if (current_galaxium + galaxium_rate * galaxium_bonus_rate) <= galaxium_max and (current_galaxium + galaxium_rate * galaxium_bonus_rate) > 0.0:
 			current_galaxium += galaxium_rate * galaxium_bonus_rate
 			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+		elif current_galaxium < 0.0:
+			current_galaxium = 0.0
+			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+			
 
 
 func setHud(_in_hud: CanvasLayer):
 	hud = _in_hud
 
 func initialize():
+	resources_event_connector()
 	hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
 	hud.updateMaterialsValue(0)
 
@@ -57,3 +62,7 @@ func activate():
 func deactivate():
 	set_process(false)
 	
+func resources_event_connector():
+	EventBus.update_galaxium.connect(update_galaxium)
+	EventBus.update_galaxium_rate.connect(update_galaxium_rate)
+	EventBus.update_material.connect(update_material)

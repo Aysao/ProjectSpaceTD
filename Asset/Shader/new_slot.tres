@@ -1,0 +1,91 @@
+[gd_resource type="VisualShader" load_steps=9 format=3 uid="uid://b6fso5gm1ol3h"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_6ds5j"]
+parameter_name = "Color"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_ok8c7"]
+parameter_name = "FloatParameter"
+hint = 1
+
+[sub_resource type="VisualShaderNodeVec3Parameter" id="VisualShaderNodeVec3Parameter_6ds5j"]
+parameter_name = "position"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_6ds5j"]
+operator = 1
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_6ds5j"]
+varying_name = "world_vector"
+varying_type = 4
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2xwyt"]
+expanded_output_ports = [0]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_w10c1"]
+input_name = "model_matrix"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_2xwyt"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_always, depth_test_default, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded;
+
+
+// Varyings
+varying vec3 var_world_vector;
+
+uniform vec3 position = vec3(0.000000, 0.000000, 0.000000);
+
+
+
+void vertex() {
+// Input:7
+	mat4 n_out7p0 = MODEL_MATRIX;
+
+
+// Input:6
+	vec3 n_out6p0 = VERTEX;
+
+
+// TransformVectorMult:8
+	vec3 n_out8p0 = (n_out7p0 * vec4(n_out6p0, 1.0)).xyz;
+
+
+// Vector3Parameter:10
+	vec3 n_out10p0 = position;
+
+
+// VectorOp:11
+	vec3 n_out11p0 = n_out8p0 - n_out10p0;
+
+
+// VaryingSetter:2
+	var_world_vector = n_out11p0;
+
+
+}
+"
+modes/depth_draw = 1
+flags/unshaded = true
+varyings/world_vector = "0,4"
+nodes/vertex/0/position = Vector2(540, 420)
+nodes/vertex/2/node = SubResource("VisualShaderNodeVaryingSetter_6ds5j")
+nodes/vertex/2/position = Vector2(240, 420)
+nodes/vertex/6/node = SubResource("VisualShaderNodeInput_2xwyt")
+nodes/vertex/6/position = Vector2(-680, 440)
+nodes/vertex/7/node = SubResource("VisualShaderNodeInput_w10c1")
+nodes/vertex/7/position = Vector2(-660, 240)
+nodes/vertex/8/node = SubResource("VisualShaderNodeTransformVecMult_2xwyt")
+nodes/vertex/8/position = Vector2(-320, 300)
+nodes/vertex/10/node = SubResource("VisualShaderNodeVec3Parameter_6ds5j")
+nodes/vertex/10/position = Vector2(-680, 760)
+nodes/vertex/11/node = SubResource("VisualShaderNodeVectorOp_6ds5j")
+nodes/vertex/11/position = Vector2(-40, 440)
+nodes/vertex/connections = PackedInt32Array(7, 0, 8, 0, 6, 0, 8, 1, 8, 0, 11, 0, 10, 0, 11, 1, 11, 0, 2, 0)
+nodes/fragment/0/position = Vector2(1240, 220)
+nodes/fog/0/position = Vector2(380, 180)
+nodes/fog/2/node = SubResource("VisualShaderNodeColorParameter_6ds5j")
+nodes/fog/2/position = Vector2(-380, 400)
+nodes/fog/3/node = SubResource("VisualShaderNodeFloatParameter_ok8c7")
+nodes/fog/3/position = Vector2(-300, 40)

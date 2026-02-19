@@ -1,0 +1,253 @@
+[gd_scene load_steps=20 format=3 uid="uid://cetqhh0jhsq3x"]
+
+[ext_resource type="Script" uid="uid://b25l574jxvm8t" path="res://Script/Manager/run_manager.gd" id="1_31uae"]
+[ext_resource type="Script" uid="uid://b1sspf63dnhsb" path="res://Script/camera_3d.gd" id="2_73s4o"]
+[ext_resource type="Texture2D" uid="uid://c26uayk3wux2m" path="res://Asset/Texture/paysage-de-nuit-de-galaxie.jpg" id="3_2uldg"]
+[ext_resource type="PackedScene" uid="uid://dwsfaij546lpd" path="res://Scene/Station/station_preview.tscn" id="4_ffvun"]
+[ext_resource type="PackedScene" uid="uid://dxe3uwdnorel0" path="res://Scene/Hud.tscn" id="5_x7qli"]
+[ext_resource type="Script" uid="uid://fk7isj3t74xc" path="res://Script/Enemies/enemies_spawn.gd" id="6_rmh1u"]
+[ext_resource type="Script" uid="uid://5qu7eg5dshur" path="res://Script/Manager/BulletManager.gd" id="7_pfjv0"]
+[ext_resource type="Script" uid="uid://b41y6lvaa3q0l" path="res://Script/Manager/ressources_manager.gd" id="8_772u4"]
+[ext_resource type="Script" uid="uid://c2fthibiaprc4" path="res://Script/Manager/placement_manager.gd" id="9_jcial"]
+[ext_resource type="Script" uid="uid://c3hh64ocoj2r0" path="res://Script/Manager/wave_manager.gd" id="10_dps1m"]
+[ext_resource type="Theme" uid="uid://6f8elyrn1fl4" path="res://Theme/card_theme.tres" id="11_2uldg"]
+[ext_resource type="Script" uid="uid://pbcrmm8kfko" path="res://Script/Manager/pause_menu.gd" id="11_73s4o"]
+[ext_resource type="Material" uid="uid://chj6t886fwt5w" path="res://Asset/Shader/zone_shader.tres" id="13_ffvun"]
+[ext_resource type="Script" uid="uid://cxagandghug7l" path="res://Script/hud_component/end_of_run.gd" id="14_x7qli"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_x7qli"]
+panorama = ExtResource("3_2uldg")
+
+[sub_resource type="Sky" id="Sky_7mycd"]
+sky_material = SubResource("PanoramaSkyMaterial_x7qli")
+
+[sub_resource type="Environment" id="Environment_wbnsc"]
+background_mode = 2
+background_energy_multiplier = 0.5
+sky = SubResource("Sky_7mycd")
+sky_custom_fov = 60.0
+sky_rotation = Vector3(3.3091443, 0, -2.0420353)
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 2.2
+reflected_light_source = 2
+fog_light_energy = 0.0
+fog_sun_scatter = 0.42
+fog_density = 0.6295
+fog_sky_affect = 0.37
+fog_height = -6.6
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2uldg"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_2uldg"]
+material = ExtResource("13_ffvun")
+
+[node name="RunManager" type="Node3D"]
+script = ExtResource("1_31uae")
+world_radius = 200.0
+
+[node name="GameNode" type="Node3D" parent="."]
+
+[node name="Enemies" type="Node3D" parent="GameNode"]
+
+[node name="Players" type="Node3D" parent="GameNode"]
+
+[node name="PlayerItems" type="Node3D" parent="GameNode"]
+
+[node name="Control" parent="GameNode" instance=ExtResource("5_x7qli")]
+visible = false
+
+[node name="SourceSpawnMarker" type="Node3D" parent="."]
+
+[node name="EnemiesSpawnMarker" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -149.70233, 0, -153.0679)
+script = ExtResource("6_rmh1u")
+
+[node name="PlayerSpawnMarker" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.059296, 0, 0)
+
+[node name="BulletManager" type="Node3D" parent="." groups=["bullet_manager"]]
+script = ExtResource("7_pfjv0")
+
+[node name="RessourcesManager" type="Node3D" parent="." groups=["resources_Manager"]]
+script = ExtResource("8_772u4")
+
+[node name="PlacementManager" type="Node3D" parent="."]
+script = ExtResource("9_jcial")
+
+[node name="WaveManager" type="Node3D" parent="."]
+script = ExtResource("10_dps1m")
+
+[node name="Timer" type="Timer" parent="WaveManager"]
+wait_time = 10.0
+one_shot = true
+
+[node name="ResourcesManager" type="Node3D" parent="."]
+script = ExtResource("8_772u4")
+
+[node name="Pause_menu" type="Control" parent="."]
+process_mode = 3
+z_index = 4
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_2uldg")
+script = ExtResource("11_73s4o")
+
+[node name="Panel" type="Panel" parent="Pause_menu"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -399.50003
+offset_top = -258.5
+offset_right = 399.50003
+offset_bottom = 258.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pause_menu/Panel"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_right = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Continue" type="Button" parent="Pause_menu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
+[node name="Option" type="Button" parent="Pause_menu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Option"
+
+[node name="BackToMenu" type="Button" parent="Pause_menu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Back to menu"
+
+[node name="Quit" type="Button" parent="Pause_menu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="WorldParameters" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldParameters"]
+transform = Transform3D(1, 0, 0, 0, 0.5720599, 0.8202118, 0, -0.8202118, 0.5720599, 0, 153.43005, 126.26234)
+light_energy = 1.212
+light_indirect_energy = 1.502
+light_volumetric_fog_energy = 0.0
+light_angular_distance = 5.4
+light_specular = 9.092
+
+[node name="Marker3D" type="Marker3D" parent="WorldParameters"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.86602557, 0, -0.86602557, 0.5, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="WorldParameters/Marker3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.71, 0, 73.270966)
+projection = 1
+size = 120.0
+near = 0.001
+script = ExtResource("2_73s4o")
+offset = Vector3(0, 70, 70)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldParameters"]
+environment = SubResource("Environment_wbnsc")
+
+[node name="station_preview" parent="WorldParameters" instance=ExtResource("4_ffvun")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="WorldParameters"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldParameters/StaticBody3D"]
+shape = SubResource("CylinderShape3D_2uldg")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldParameters/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_2uldg")
+
+[node name="Control" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("11_2uldg")
+script = ExtResource("14_x7qli")
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -826.0
+offset_top = -427.5
+offset_right = 826.0
+offset_bottom = 427.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -665.5
+offset_right = 665.5
+offset_bottom = 247.5
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 166
+text = "END OF RUN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -338.0
+offset_top = -536.5
+offset_right = 338.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Button" type="Button" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+text = "REPLAY"
+icon_alignment = 1
+
+[node name="Button2" type="Button" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+text = "BACK TO MENU"
+
+[connection signal="child_entered_tree" from="GameNode/PlayerItems" to="." method="_on_player_items_child_entered_tree"]
+[connection signal="child_exiting_tree" from="GameNode/PlayerItems" to="." method="_on_player_items_child_exiting_tree"]
+[connection signal="emit_spawn_request" from="GameNode/Control" to="PlacementManager" method="_on_control_emit_spawn_request"]
+[connection signal="timeout" from="WaveManager/Timer" to="WaveManager" method="_on_timer_timeout"]
+[connection signal="pressed" from="Pause_menu/Panel/VBoxContainer/Continue" to="Pause_menu" method="_on_continue_pressed"]
+[connection signal="pressed" from="Pause_menu/Panel/VBoxContainer/BackToMenu" to="Pause_menu" method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="Pause_menu/Panel/VBoxContainer/Quit" to="Pause_menu" method="_on_quit_pressed"]
+[connection signal="pressed" from="Control/Panel/VBoxContainer/Button" to="Control" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="Control/Panel/VBoxContainer/Button2" to="Control" method="_on_back_to_menu_pressed"]

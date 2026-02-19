@@ -1,13 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqdnt0akcj836"]
+[gd_scene load_steps=5 format=3 uid="uid://cqdnt0akcj836"]
 
 [ext_resource type="Script" uid="uid://c83iedqmpq61w" path="res://Script/Station/PlacementStation/station_slot.gd" id="1_uifpu"]
+[ext_resource type="Material" uid="uid://bqgox3os063eh" path="res://Asset/Shader/slot.tres" id="2_4u0vo"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_42wlh"]
 height = 15.0
 radius = 10.0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ko6xb"]
-lightmap_size_hint = Vector2i(17, 9)
+lightmap_size_hint = Vector2i(316, 104)
+material = ExtResource("2_4u0vo")
 flip_faces = true
 top_radius = 10.0
 bottom_radius = 10.0
@@ -24,7 +26,7 @@ script = ExtResource("1_uifpu")
 shape = SubResource("CylinderShape3D_42wlh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028123856, -10.114016, -0.08348107)
 mesh = SubResource("CylinderMesh_ko6xb")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

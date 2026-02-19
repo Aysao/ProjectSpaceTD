@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://d3hf0wqhbednm"]
+
+[ext_resource type="PackedScene" uid="uid://f253o3pwkuxs" path="res://Scene/Station/SupportStation/station_support_type.tscn" id="1_kk5vu"]
+[ext_resource type="Script" uid="uid://b6gl3pyrdus5c" path="res://Script/Station/SupportPlacement/booster_station.gd" id="2_3ex4e"]
+[ext_resource type="PackedScene" uid="uid://cqipep6htfnix" path="res://Asset/Entity/booster.glb" id="3_kysfy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3ex4e"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bm3ak"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[node name="StationBase" instance=ExtResource("1_kk5vu")]
+script = ExtResource("2_3ex4e")
+galaxiumConsumption = -0.5
+
+[node name="Model" parent="." index="0"]
+transform = Transform3D(-7.86805e-08, 0, 1.8, 0, 1.8, 0, -1.8, 0, -7.86805e-08, 0, 0, 0)
+
+[node name="booster" parent="Model" index="0" instance=ExtResource("3_kysfy")]
+
+[node name="CollisionShape3D" parent="." index="1"]
+shape = SubResource("BoxShape3D_3ex4e")
+disabled = true
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_bm3ak")

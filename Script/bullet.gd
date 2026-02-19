@@ -6,6 +6,8 @@ var direction: Vector3 = Vector3.ZERO;
 @export var damage = 10;
 @export var bullet_range = 300;
 @export var target = 0;
+var target_node : Node3D
+var parent_node : Node3D
 var activated = false
 
 signal releaseBullet(bullet)
@@ -23,8 +25,13 @@ func _physics_process(delta: float) -> void:
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body and body.is_in_group("shootable") && body.is_active():
 		if body.bullet_layer == target:
-			body.take_damage(damage)
-		freeBullet()
+			if parent_node != null and parent_node.is_in_group("Station"):
+				if target_node != null and body == target_node:
+					body.take_damage(damage)
+					freeBullet()
+			else:
+				body.take_damage(damage)
+				freeBullet()
 	pass # Replace with function body.
 
 func initBullet(in_direction, in_target, in_damage, in_position):
@@ -33,6 +40,10 @@ func initBullet(in_direction, in_target, in_damage, in_position):
 	target = in_target
 	damage = in_damage
 	direction = in_direction
+	
+func init_station_bullet(station, enemy):
+	parent_node = station
+	target_node = enemy
 
 func freeBullet():
 	releaseBullet.emit(self)

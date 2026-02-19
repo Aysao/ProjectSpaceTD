@@ -60,7 +60,7 @@ viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
 [node name="StationBase" instance=ExtResource("1_f22qy")]
 collision_layer = 2
 script = ExtResource("2_kecfe")
-damage = 50.0
+damage = 100.0
 effectZoneSize = 30
 galaxiumConsumption = 0.5
 station_Type = 2

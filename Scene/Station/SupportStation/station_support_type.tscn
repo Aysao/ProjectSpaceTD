@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://f253o3pwkuxs"]
+
+[ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/Station/station_base.tscn" id="1_x1es1"]
+[ext_resource type="Script" uid="uid://cjkdb64o4xdgy" path="res://Script/Station/SupportPlacement/station_support_type.gd" id="2_inxyr"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_3pel6"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[node name="StationBase" instance=ExtResource("1_x1es1")]
+script = ExtResource("2_inxyr")
+bullet_layer = 0
+station_Type = 3
+neededSlot = 2
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_3pel6")

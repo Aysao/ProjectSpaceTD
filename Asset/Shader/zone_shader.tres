@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://chj6t886fwt5w"]
+
+[ext_resource type="Shader" uid="uid://btti6sk51dwyq" path="res://Asset/Shader/zone_shader.gdshader" id="1_jlcow"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_jlcow")
+shader_parameter/smoke_color = Vector4(0.7, 0, 1, 0.3)
+shader_parameter/speed = 0.5
+shader_parameter/scale = 0.05
+shader_parameter/detail_scale = 1.0
+shader_parameter/detail_intensity = 1.0
+shader_parameter/alpha_min = 0.2

@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://bqgox3os063eh"]
+
+[ext_resource type="Shader" uid="uid://bt3p6hvwsq24n" path="res://Asset/Shader/test.gdshader" id="1_a4lkg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a4lkg"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ylwaq"]
+noise = SubResource("FastNoiseLite_a4lkg")
+seamless = true
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a4lkg")
+shader_parameter/position = Vector3(0, 0, 0)
+shader_parameter/edge_distance = 8.0
+shader_parameter/wave_color = Color(0.5664398, 0.43140107, 0.9967888, 1)
+shader_parameter/noise_color = Color(0.42827302, 0.43439785, 0.7234603, 1)
+shader_parameter/noise = SubResource("NoiseTexture2D_ylwaq")
+shader_parameter/line_width = 0.8
+shader_parameter/Activated = false
+shader_parameter/minismooth = 0.1
+shader_parameter/maxismooth = 0.69

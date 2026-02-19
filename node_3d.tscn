@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://3y6cbxj3p1ri"]
+
+[ext_resource type="Shader" uid="uid://bt3p6hvwsq24n" path="res://Asset/Shader/test.gdshader" id="1_a202f"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a202f"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a202f"]
+noise = SubResource("FastNoiseLite_a202f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
+render_priority = 0
+shader = ExtResource("1_a202f")
+shader_parameter/position = Vector3(0, 0, 0)
+shader_parameter/edge_distance = 0.0
+shader_parameter/wave_color = Vector4(0.5, 0.5, 1, 1)
+shader_parameter/noise_color = Vector4(0.395, 0.205, 0.68, 0.1)
+shader_parameter/noise = SubResource("NoiseTexture2D_a202f")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_a202f"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014823437, 0.24395895, 0.020977497)
+material_override = SubResource("ShaderMaterial_noarx")
+mesh = SubResource("PlaneMesh_a202f")

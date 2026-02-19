@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://dve5nsd533h1u"]
+
+[ext_resource type="Script" uid="uid://t2x2q5tjxub4" path="res://Script/hud_component/station_selection.gd" id="1_bo5hj"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bo5hj")
+
+[node name="mainlist" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_right = 441.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="mainlist"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 192
+
+[node name="sublist" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -463.0
+offset_right = 175.0
+offset_bottom = -152.0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="sublist"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 138

@@ -1,0 +1,73 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://6f8elyrn1fl4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2t8x3"]
+bg_color = Color(0.3161334, 0.27331546, 0.41961008, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2520277, 0.25202766, 0.25202748, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxw4h"]
+bg_color = Color(0.62327874, 0.5365977, 1.1382658, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.35450146, 0.14553034, 0.65541214, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wnh6c"]
+bg_color = Color(0.3688476, 0.31320488, 0.6898632, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.35450146, 0.14553034, 0.65541214, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x7h5d"]
+bg_color = Color(0.16663916, 0.1379148, 0.33488178, 1)
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.35450146, 0.14553034, 0.65541214, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ebsjj"]
+bg_color = Color(0.27428287, 0.24797396, 0.68764657, 0.34117648)
+border_width_left = 20
+border_width_top = 20
+border_width_right = 20
+border_width_bottom = 20
+border_color = Color(0.079513006, 0.08403253, 0.23952687, 1)
+border_blend = true
+
+[resource]
+Button/styles/disabled = SubResource("StyleBoxFlat_2t8x3")
+Button/styles/hover = SubResource("StyleBoxFlat_xxw4h")
+Button/styles/normal = SubResource("StyleBoxFlat_wnh6c")
+Button/styles/pressed = SubResource("StyleBoxFlat_x7h5d")
+Panel/styles/panel = SubResource("StyleBoxFlat_ebsjj")

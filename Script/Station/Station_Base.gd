@@ -10,20 +10,19 @@ class_name StationBase
 @export var station_Type := StationReference.StationType.SOURCE
 @export var neededSlot := StationReference.StationSlotType.DEPLOYER_SLOT
 
+var resources_manager:ResourcesManager
 
 var is_holding := false
 var playerInArea := false
 var parentSlot : Node3D
 
-var ressourceManager : Node3D
 @onready var stationAnimation := $AnimationPlayer
-@onready var healthbar = $HealthBar/SubViewport/ProgressBar
 @onready var model = $Model
 
 #Upgrade mecanique 
-@export var upgradeWeight := 0.0
-@export var upgradingConsumption := 0
-@export var upgradeCount := 0
+@export var upgrade_list: Dictionary
+@export var current_upgrade_stats: Dictionary
+@export var current_level := 0
 
 #Materials
 @export var blueprint_material: ShaderMaterial
@@ -37,29 +36,24 @@ signal build_area_exited(stationNode : Node3D)
 signal in_InteractionZone(in_interactionZone : Node3D)
 
 func _ready() -> void:
+	resources_manager = get_tree().get_first_node_in_group("resources_Manager")
 	update_visual_state()
 	if activated == 1 :
-		ressourceManager = get_tree().get_first_node_in_group("ressource_Manager")
 		init()
 		initAnimation()
 			
 
-func take_damage(damage: int) -> void:
-	current_health -= damage
-	healthbar.value = current_health
-	if current_health <= 0:
-		_die()
+
 
 func _die():
 	queue_free()
 	if parentSlot:
-		print("in parentSlot")
 		parentSlot.station = null
 		parentSlot.parent.update_limit()
 	pass
 
 func update_label_position(isCubic : bool, node_to_place : Node3D, offset : Vector3):
-	if not model or not healthbar:
+	if not model:
 		return
 
 	# Récupère la taille réelle du modèle
@@ -138,8 +132,18 @@ func _input(event: InputEvent) -> void:
 		start_hold()
 	if event.is_action_released("build"):
 		stop_hold()
+	if playerInArea and event.is_action_pressed("upgrade"):
+		upgrade_hud_request()
 
-
+func upgrade_hud_request():
+	var hud = get_tree().get_first_node_in_group("HUD")
+	hud.display_current_upgrade(self)
+	
+func hide_upgrade_hud():
+	var hud = get_tree().get_first_node_in_group("HUD")
+	var upgrade_control = get_tree().get_first_node_in_group("UpgradeControl")
+	
+	
 func start_hold():
 	is_holding = true
 	hold_input_cooldown.start(2.0)
@@ -155,9 +159,16 @@ func init():
 func initAnimation():
 	pass
 
+func upgrade(key: String):
+	EventBus.update_material.emit(int(upgrade_list[key]["cost"]) * -1)
+	specific_upgrade(key)
+	pass
+
+func specific_upgrade(key: String):
+	pass
 
 func _on_timer_timeout() -> void:
 	if playerInArea and is_holding:
 		_die()
-		ressourceManager.update_material(materialPrice/2)
+		resources_manager.update_material(materialPrice/2)
 	pass # Replace with function body.

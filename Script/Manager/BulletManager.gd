@@ -40,12 +40,18 @@ func generatePlayerBulletPool():
 		
 
 func get_player_bullet() -> Node3D:
-	var bullet = playerBulletPool.pop_back()
-	bullet.visible = true
-	bullet.collision.disabled = false
-	bullet.activated = true
-	bullet.process_mode = Node.PROCESS_MODE_INHERIT
-	return bullet
+	for i in range(playerBulletPool.size() - 1, -1, -1):
+		var bullet = playerBulletPool[i]
+		if not bullet.activated:
+			playerBulletPool.remove_at(i)
+			bullet.visible = true
+			bullet.collision.disabled = false
+			bullet.activated = true
+			bullet.process_mode = Node.PROCESS_MODE_INHERIT
+			return bullet
+	# Si aucune bullet dispo
+	return null
+		
 	
 func release_ennemie_bullet(bullet):
 	call_deferred("deactivate_enemie_bullet", bullet)
@@ -65,4 +71,6 @@ func deactivate_player_bullet(bullet):
 	bullet.visible = false
 	bullet.activated = false
 	bullet.collision.disabled = true
+	bullet.target_node = null
+	bullet.parent_node = null
 	bullet.process_mode = Node.PROCESS_MODE_DISABLED

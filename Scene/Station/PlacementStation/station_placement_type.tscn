@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://nhswwg8agd86" path="res://Scene/Station/station_base.tscn" id="1_lpy1l"]
 [ext_resource type="Script" uid="uid://ctsg4tkyubap1" path="res://Script/Station/PlacementStation/station_placement_type.gd" id="2_igpxm"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_06f20"]
+viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qiirj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06f20"]
@@ -11,12 +14,15 @@ bg_color = Color(0.68652284, 0.08087172, 0.29138973, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_m3biy"]
 viewport_path = NodePath("HealthBar/SubViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_06f20"]
-viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
-
 [node name="StationBase" instance=ExtResource("1_lpy1l")]
 script = ExtResource("2_igpxm")
 slotLimit = 0
+
+[node name="Interaction" parent="." index="3"]
+visible = true
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_06f20")
 
 [node name="HealthBar" type="Node3D" parent="." index="4"]
 visible = false
@@ -42,6 +48,3 @@ transparent = false
 texture = SubResource("ViewportTexture_m3biy")
 
 [node name="SlotNode" type="Node3D" parent="." index="5"]
-
-[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
-texture = SubResource("ViewportTexture_06f20")

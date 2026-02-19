@@ -18,7 +18,7 @@ viewport_path = NodePath("HealthBar/SubViewport")
 [node name="StationBase" groups=["Source", "shootable"] instance=ExtResource("1_goilr")]
 collision_layer = 2
 script = ExtResource("2_pocqa")
-slotLimit = 6
+slotLimit = 1
 max_health = 300.0
 current_health = 300.0
 blueprint_material = null
@@ -29,9 +29,6 @@ transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0, 0)
 [node name="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9697266, 0)
 shape = SubResource("CylinderShape3D_lfv14")
-
-[node name="Interaction" parent="." index="3"]
-visible = true
 
 [node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
 texture = SubResource("ViewportTexture_pocqa")

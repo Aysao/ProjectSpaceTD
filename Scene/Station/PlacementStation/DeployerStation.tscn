@@ -9,11 +9,11 @@
 height = 8.436035
 radius = 2.078125
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ctkv8"]
-viewport_path = NodePath("HealthBar/SubViewport")
-
 [sub_resource type="ViewportTexture" id="ViewportTexture_p2ea7"]
 viewport_path = NodePath("Interaction/InteractionHUD/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ctkv8"]
+viewport_path = NodePath("HealthBar/SubViewport")
 
 [node name="StationBase" groups=["shootable"] instance=ExtResource("1_cksld")]
 collision_layer = 2
@@ -21,14 +21,14 @@ script = ExtResource("2_eybwd")
 slotLimit = 1
 station_Type = 1
 
-[node name="Camera3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 127.178, 33.676453)
-
 [node name="Deployer" parent="Model" index="0" instance=ExtResource("2_ctkv8")]
 
-[node name="CollisionShape3D" parent="." index="2"]
+[node name="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.94555664, 0)
 shape = SubResource("CylinderShape3D_ctkv8")
+
+[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
+texture = SubResource("ViewportTexture_p2ea7")
 
 [node name="Sprite3D" parent="HealthBar" index="1"]
 texture = SubResource("ViewportTexture_ctkv8")
@@ -61,6 +61,3 @@ parent = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.52, 0, 26.38)
 slot_type = 2
 parent = NodePath("../..")
-
-[node name="Sprite3D" parent="Interaction/InteractionHUD" index="1"]
-texture = SubResource("ViewportTexture_p2ea7")
