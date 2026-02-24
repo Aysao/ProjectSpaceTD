@@ -7,13 +7,83 @@
 [ext_resource type="PackedScene" uid="uid://dxe3uwdnorel0" path="res://Scene/Hud.tscn" id="5_x7qli"]
 [ext_resource type="Script" uid="uid://fk7isj3t74xc" path="res://Script/Enemies/enemies_spawn.gd" id="6_rmh1u"]
 [ext_resource type="Script" uid="uid://5qu7eg5dshur" path="res://Script/Manager/BulletManager.gd" id="7_pfjv0"]
-[ext_resource type="Script" uid="uid://b41y6lvaa3q0l" path="res://Script/Manager/ressources_manager.gd" id="8_772u4"]
 [ext_resource type="Script" uid="uid://c2fthibiaprc4" path="res://Script/Manager/placement_manager.gd" id="9_jcial"]
 [ext_resource type="Script" uid="uid://c3hh64ocoj2r0" path="res://Script/Manager/wave_manager.gd" id="10_dps1m"]
 [ext_resource type="Theme" uid="uid://6f8elyrn1fl4" path="res://Theme/card_theme.tres" id="11_2uldg"]
 [ext_resource type="Script" uid="uid://pbcrmm8kfko" path="res://Script/Manager/pause_menu.gd" id="11_73s4o"]
 [ext_resource type="Material" uid="uid://chj6t886fwt5w" path="res://Asset/Shader/zone_shader.tres" id="13_ffvun"]
 [ext_resource type="Script" uid="uid://cxagandghug7l" path="res://Script/hud_component/end_of_run.gd" id="14_x7qli"]
+
+[sub_resource type="GDScript" id="GDScript_ffvun"]
+script/source = "extends Node3D
+class_name ResourcesManager
+
+var hud : CanvasLayer
+
+var ressources := 0
+var materials := 0
+
+
+var activated := false
+# Ressource
+@export var galaxium_max : int = 100.0
+@export var current_galaxium : float = 0.0
+@export var galaxium_rate : float = 1.0
+@export var galaxium_bonus_rate : float = 1.0
+@export var galaxium_timerate : float = 1.0
+var cooldown_galaxium = 1.0
+
+func _ready() -> void:
+	set_process(false)
+
+func _process(delta: float) -> void:
+	cooldown_galaxium -= delta
+	if cooldown_galaxium <= 0 :
+		cooldown_galaxium = galaxium_timerate
+		if (current_galaxium + galaxium_rate * galaxium_bonus_rate) <= galaxium_max and (current_galaxium + galaxium_rate * galaxium_bonus_rate) > 0.0:
+			current_galaxium += galaxium_rate * galaxium_bonus_rate
+			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+		elif current_galaxium < 0.0:
+			current_galaxium = 0.0
+			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+			
+
+
+func setHud(_in_hud: CanvasLayer):
+	hud = _in_hud
+
+func initialize():
+	resources_event_connector()
+	hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+	hud.updateMaterialsValue(0)
+
+func update_material(value_to_update : int):
+	materials += value_to_update
+	hud.updateMaterialsValue(materials)
+	
+func update_galaxium(value_to_update : float):
+	current_galaxium += value_to_update
+	hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+
+func update_galaxium_rate(value_to_update : float):
+	galaxium_rate += value_to_update
+	hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+
+func isEnough(value : int) -> bool :
+	return materials >= value
+	
+	
+func activate():
+	set_process(true)
+	
+func deactivate():
+	set_process(false)
+	
+func resources_event_connector():
+	EventBus.update_galaxium.connect(update_galaxium)
+	EventBus.update_galaxium_rate.connect(update_galaxium_rate)
+	EventBus.update_material.connect(update_material)
+"
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_x7qli"]
 panorama = ExtResource("3_2uldg")
@@ -70,7 +140,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.059296, 0, 0)
 script = ExtResource("7_pfjv0")
 
 [node name="RessourcesManager" type="Node3D" parent="." groups=["resources_Manager"]]
-script = ExtResource("8_772u4")
+script = SubResource("GDScript_ffvun")
 
 [node name="PlacementManager" type="Node3D" parent="."]
 script = ExtResource("9_jcial")
@@ -81,6 +151,9 @@ script = ExtResource("10_dps1m")
 [node name="Timer" type="Timer" parent="WaveManager"]
 wait_time = 10.0
 one_shot = true
+
+[node name="ResourcesManager" type="Node3D" parent="."]
+script = SubResource("GDScript_ffvun")
 
 [node name="Pause_menu" type="Control" parent="."]
 process_mode = 3

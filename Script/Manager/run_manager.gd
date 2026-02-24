@@ -93,12 +93,12 @@ func makeSourceSpawn() -> StationBase :
 
 
 func _on_player_items_child_entered_tree(node: Node) -> void:
-	if node and node.is_in_group("Station") and (node.station_Type == StationReference.StationType.ATTACKER or node.station_Type == StationReference.StationType.SUPPORT) :
+	if node and node.is_in_group("Station"):
 		EventBus.update_galaxium_rate.emit(-node.galaxiumConsumption)
 	pass # Replace with function body.
 
 
 func _on_player_items_child_exiting_tree(node: Node) -> void:
-	if node and node.is_in_group("Station") and (node.station_Type == StationReference.StationType.ATTACKER or node.station_Type == StationReference.StationType.SUPPORT) :
+	if node and node.is_in_group("Station") :
 		EventBus.update_galaxium_rate.emit(node.galaxiumConsumption)
 	pass # Replace with function body.

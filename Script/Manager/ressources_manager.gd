@@ -23,12 +23,8 @@ func _process(delta: float) -> void:
 	cooldown_galaxium -= delta
 	if cooldown_galaxium <= 0 :
 		cooldown_galaxium = galaxium_timerate
-		if (current_galaxium + galaxium_rate * galaxium_bonus_rate) <= galaxium_max and (current_galaxium + galaxium_rate * galaxium_bonus_rate) > 0.0:
-			current_galaxium += galaxium_rate * galaxium_bonus_rate
-			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
-		elif current_galaxium < 0.0:
-			current_galaxium = 0.0
-			hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
+		current_galaxium = clamp((current_galaxium + galaxium_rate * galaxium_bonus_rate), 0, galaxium_max)
+		hud.updateProgressBar(current_galaxium, galaxium_rate*galaxium_bonus_rate)
 			
 
 

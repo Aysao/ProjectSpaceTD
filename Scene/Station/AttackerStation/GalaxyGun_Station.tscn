@@ -64,7 +64,6 @@ damage = 100.0
 effectZoneSize = 30
 galaxiumConsumption = 0.5
 station_Type = 2
-neededSlot = 2
 
 [node name="Canon" type="Node3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4917889, -4.226822)

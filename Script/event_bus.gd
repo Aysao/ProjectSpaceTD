@@ -30,3 +30,4 @@ signal replay()
 # ---------------------- PLACEMENT EVENT ---------------------- #
 
 signal cancel_placement()
+signal connect_all_slot()

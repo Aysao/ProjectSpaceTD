@@ -5,7 +5,6 @@ extends Node3D
 
 var player: Node3D
 var locked_slot = null
-var needed_slot = null
 var is_snapped: bool = false
 
 var cooldown_rate = 1.0
@@ -57,7 +56,6 @@ func reset():
 		get_child(0).queue_free()
 	unlock_from_slot()
 	locked_slot = null
-	needed_slot = null
 	is_snapped = false
 	
 func _update_visual(snapped: bool):

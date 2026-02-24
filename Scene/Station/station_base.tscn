@@ -5,7 +5,7 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_k6kt4"]
 height = 8.580078
-radius = 12.612305
+radius = 14.114258
 
 [sub_resource type="LabelSettings" id="LabelSettings_k6kt4"]
 font_size = 100

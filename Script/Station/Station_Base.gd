@@ -8,7 +8,6 @@ class_name StationBase
 @export var galaxiumConsumption := 0.0
 @export var activated := 1
 @export var station_Type := StationReference.StationType.SOURCE
-@export var neededSlot := StationReference.StationSlotType.DEPLOYER_SLOT
 
 var resources_manager:ResourcesManager
 
@@ -49,7 +48,7 @@ func _die():
 	queue_free()
 	if parentSlot:
 		parentSlot.station = null
-		parentSlot.parent.update_limit()
+		parentSlot.is_disabled = false
 	pass
 
 func update_label_position(isCubic : bool, node_to_place : Node3D, offset : Vector3):

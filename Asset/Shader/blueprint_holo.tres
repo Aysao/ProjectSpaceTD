@@ -6,7 +6,6 @@
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0l1cf"]
 noise = SubResource("FastNoiseLite_p6s1d")
-as_normal_map = true
 
 [resource]
 render_priority = 0

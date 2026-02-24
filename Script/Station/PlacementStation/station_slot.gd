@@ -1,9 +1,7 @@
 extends Node3D
-class_name stationSlot
+class_name StationSlot
 
 @onready var slot_mesh := $Area3D/MeshInstance3D
-@export var slot_type := StationReference.StationSlotType.DEPLOYER_SLOT
-@export var parent : Node3D
 var is_disabled := false
 var station = null
 
@@ -25,15 +23,15 @@ func _process(delta: float) -> void:
 	slot_mesh.material_override.set_shader_parameter("position", global_position)
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
-	if body.is_in_group("Player") and not is_disabled:
+	if body.is_in_group("Player"):
 		player_far.emit(self)
 	pass # Replace with function body.
 
 func place_station(stationIn : Node3D) -> bool:
-	if stationIn.neededSlot == slot_type and not is_disabled:
+	if not is_disabled:
 		station = stationIn
 		station.parentSlot = self
-		updateLimit.emit()
+		is_disabled = true
 		return true
 	else: 
 		return false

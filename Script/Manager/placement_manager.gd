@@ -44,12 +44,12 @@ func _on_slot_entered(slot: Node3D):
 	if slot.station:
 		return
 	
-	if preview and slot.slot_type == preview.neededSlot:
+	if preview:
 		active_slots.append(slot)
 		_update_snap()
 
 func _on_slot_exited(slot: Node3D):
-	if preview and slot.slot_type == preview.neededSlot:
+	if preview:
 		active_slots.erase(slot)
 		_update_snap()
 
@@ -121,14 +121,13 @@ func _on_control_emit_spawn_request(station_name: String) -> void:
 	pass # Replace with function body.
 
 func onSpawnStation(station):
-	if station.station_Type == StationReference.StationType.DEPLOYER :
-		_connect_all_slots()
-	elif station.station_Type == StationReference.StationType.ATTACKER :
+	if station.station_Type == StationReference.StationType.ATTACKER :
 		pass
 
 
 func init():
 	EventBus.cancel_placement.connect(cancel_placement)
+	EventBus.connect_all_slot.connect(_connect_all_slots)
 	resources_manager = get_tree().get_first_node_in_group("resources_Manager")
 	_connect_all_slots()
 	

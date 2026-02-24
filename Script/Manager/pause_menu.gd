@@ -10,7 +10,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_back_to_menu_pressed() -> void:
-	get_tree().paused = false
+	
 	EventBus.back_to_menu.emit()
 	pass # Replace with function body.
 
